@@ -112,7 +112,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int  = TODO()
 
 /**
  * Простая
@@ -158,4 +158,25 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+        when {
+            // 1. Если отрезок AB лежит на отрезке CD.
+            ((b - c) > 0) && (a > c) && (d > b) && (d > a)                 -> return (b - a)
+            // 2. Если пересечение отрезков лежит от D до A.
+            ((b - c) > 0) && (c < a) && (c < b) && (d < b) && (d - a > 0)  -> return (d - a)
+            // 3. Если отрезок CD меньше отрезка AB.
+            ((b - c) > 0) && (c < a) && (d < a)                            -> return -1
+            // 4. Если персечение отрезка от C до B.
+            ((b - c) > 0) && (c > a) && (d > b)                            -> return (b - c)
+            // 5. Если отрезок CD лежит в на отрезке AB.
+            ((b - c) > 0) && (d < b) && (c > a)                            -> return (d - c)
+            // 6. Если одна из точек равны C == B или D == A.
+            (c == b) || (d == a)                                           -> return 0
+            // 7. Если отрезки равны.
+            (a == c) && (b == d)                                           -> return (b - a)
+            // 8. Если нет пересечения.
+            ((b - c) < 0)                                                  -> return -1
+
+        }
+    return 404
+}
