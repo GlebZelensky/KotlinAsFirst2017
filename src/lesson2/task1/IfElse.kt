@@ -2,6 +2,8 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import kotlin.reflect.jvm.internal.impl.util.Check
 
 /**
  * Пример
@@ -33,7 +35,18 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    val a = age%10 // извлечь последнюю цифру от числа.
+    val b = age%100 //числа от 11 до 19,  ""11 лет, 12 лет и тд.".
+         if (b in 11..19)             return "$age лет"
+         else
+         if (a == 1)                  return "$age год"
+         else
+         if ((a in 5..9) || (a == 0)) return "$age лет"
+         else
+         if (a in 2..4)               return "$age года"
+    return "Error"
+}
 
 /**
  * Простая
@@ -44,7 +57,22 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val s1 = v1 * t1                //  расстояние №1.
+    val s2 = v2 * t2                //  расстояние №2.
+    val s3 = v3 * t3                //  расстояние №3.
+    val sHalf = ((s1 + s2 + s3) / 2) // половина всего расстояния.
+    val sDecision1 = t1 + (sHalf - s1) / v2                // Решение условия: ((sHalf > s1) && (sHalf <= s1 + s2)).
+    val sDecision2 = sHalf / v1                            // Решение условия: (sHalf < s1).
+    val sDecision3 = ((sHalf - (s1 + s2)) / v3) + t1 + t2  // Решение условия: (sHalf > s1 + s2).
+    when {
+        ((sHalf > s1) && (sHalf <= s1 + s2)) -> return sDecision1    // Подставляем решения условий
+        (sHalf < s1)                         -> return sDecision2
+        (sHalf > s1 + s2)                    -> return sDecision3
+    }
+    return Double.NaN
+}
+
 
 /**
  * Простая
@@ -57,7 +85,20 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    when {
+        // 1. Если атакуют обе ладьи.
+        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2 ) || (kingY == rookY2)) -> return 3
+        // 2. Если атакует только вторая ладья.
+        ((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1 ) || (kingY != rookY1)) -> return 2
+        // 3. Если атакует только первая ладья.
+        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2 ) || (kingY != rookY2)) -> return 1
+        // 4. Если угрозы нет.
+        ((kingY != rookY1) && (kingY != rookY2) && (kingX != rookX1) && (kingX != rookX2))    -> return 0
+
+    }
+    return 404
+}
 
 /**
  * Простая
@@ -81,7 +122,33 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val CheckAngleForA = sqr(b) + sqr(c)
+    val CheckAngleForC = sqr(a) + sqr(b)
+    val CheckAngleForB = sqr(a) + sqr(c)
+    if ((a < b + c) && (b < a + c) && (c < b + a)) else return -1  // Если треугольник не существует
+    if ((a >= b) && (a >= c))
+        when {
+            CheckAngleForA == sqr(a) -> return 1
+            CheckAngleForA > sqr(a)  -> return 0
+            CheckAngleForA < sqr(a)  -> return 2
+        }
+    else
+    if ((c >= a) && (c >= b))
+    when {
+        CheckAngleForC == sqr(c) -> return 1
+        CheckAngleForC > sqr(c)  -> return 0
+        CheckAngleForC < sqr(c)  -> return 2
+    }
+    else
+    if ((b >= a) && (b >= c))
+    when {
+        CheckAngleForB == sqr(b) -> return 1
+        CheckAngleForB > sqr(b)  -> return 0
+        CheckAngleForB < sqr(b)  -> return 2
+    }
+    return -1
+}
 
 /**
  * Средняя
