@@ -3,6 +3,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import java.lang.Math.abs
 import kotlin.reflect.jvm.internal.impl.util.Check
 
 /**
@@ -88,18 +89,18 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX2: Int, rookY2: Int): Int {
     when {
         // 1. Если атакуют обе ладьи.
-        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2 ) || (kingY == rookY2)) -> return 3
+        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)) -> return 3
         // 2. Если атакует только вторая ладья.
-        ((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1 ) || (kingY != rookY1)) -> return 2
+        ((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1) || (kingY != rookY1)) -> return 2
         // 3. Если атакует только первая ладья.
-        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2 ) || (kingY != rookY2)) -> return 1
+        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) || (kingY != rookY2)) -> return 1
         // 4. Если угрозы нет.
         ((kingY != rookY1) && (kingY != rookY2) && (kingX != rookX1) && (kingX != rookX2))    -> return 0
 
     }
     return 404
 }
-
+fun sqrInt(x:Int):Int=x*x
 /**
  * Простая
  *
@@ -112,7 +113,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int  = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    when {
+        ((abs(kingX - bishopX)) == (abs(kingY - bishopY)))  && ((kingX == rookX) || (kingY == rookY)) -> return 3
+        ((abs(kingX - bishopX)) == (abs(kingY - bishopY)))  -> return 2
+        ((kingX == rookX) || (kingY == rookY)) -> return 1
+        else -> return 0
+    }
+}
 
 /**
  * Простая
@@ -160,23 +168,20 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         when {
-            // 1. Если отрезок AB лежит на отрезке CD.
-            ((b - c) > 0) && (a > c) && (d > b) && (d > a)                 -> return (b - a)
-            // 2. Если пересечение отрезков лежит от D до A.
-            ((b - c) > 0) && (c < a) && (c < b) && (d < b) && (d - a > 0)  -> return (d - a)
-            // 3. Если отрезок CD меньше отрезка AB.
-            ((b - c) > 0) && (c < a) && (d < a)                            -> return -1
-            // 4. Если персечение отрезка от C до B.
-            ((b - c) > 0) && (c > a) && (d > b)                            -> return (b - c)
-            // 5. Если отрезок CD лежит в на отрезке AB.
-            ((b - c) > 0) && (d < b) && (c > a)                            -> return (d - c)
-            // 6. Если одна из точек равны C == B или D == A.
-            (c == b) || (d == a)                                           -> return 0
-            // 7. Если отрезки равны.
-            (a == c) && (b == d)                                           -> return (b - a)
-            // 8. Если нет пересечения.
-            ((b - c) < 0)                                                  -> return -1
+            // 1. Если пересечение является отрезоком cb.
+            (c > a) && (c < b) && (b < d)            -> return (b - c)
+            // 2. Если пересечение является отрезоком cd.
+            (c < b) && (c > a) && (b > d) && (d > a) -> return (d - c)
+            // 3. Если пересечение является отрезоком ab.
+            (c < a) && (c < b) && (d > b) && (d > a) -> return (b - a)
+            // 4. Если пересечение является отрезком  ad.
+            (c < a) && (c < b) && (d > a) && (d < b) -> return (d - a)
+            // 5. Если точки отрезков лежат друг на друге или только одна точка одного отрезка лежит на одной точке другого отрезка.
+            (c < a) && (c < b) && (a == d) -> return 0
+            (d > b) && (d > a) && (c == b) -> return 0
+            (a == c) && (b == d)           -> return 0
+            // 6.Если отрезки не пересекаются.
+            else -> return -1
 
         }
-    return 404
 }
