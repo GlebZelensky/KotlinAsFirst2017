@@ -2,6 +2,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import javax.sound.midi.MidiChannel
 
 /**
  * Пример
@@ -73,4 +74,14 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    // Минимальная сторона у кирпича.
+    val MinFromABC = minOf(a,b,c)
+    // Средняя сторона у кирпича.
+    val MidFromABC = (a + b + c) - maxOf(a,b,c) - MinFromABC
+    // Min сторона у отверстия.
+    val MinFromRS = minOf(r,s)
+    // Max сторона у отверстия.
+    val MaxFromRS = (r + s) - MinFromRS
+    return (MinFromABC <= MinFromRS) && (MidFromABC <= MaxFromRS)
+}
