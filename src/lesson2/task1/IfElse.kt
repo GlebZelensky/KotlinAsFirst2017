@@ -176,6 +176,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
             // 3. Если пересечение является отрезоком ab.
             (c < a) && (c < b) && ((d > b) || (d ==b)) && (d > a)  -> return (b - a)
             (c == a) && (c < b) && (d > b) && (d > a)              -> return (b - a)
+            ((a == c) && (b == d)) -> return (b - a)
             // 4. Если пересечение является отрезком  ad.
             (c < a) && (c < b) && (d > a) && (d < b) -> return (d - a)
             // 5. Если точки не персекаются
