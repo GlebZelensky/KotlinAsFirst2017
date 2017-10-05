@@ -4,7 +4,7 @@ package lesson3.task1
 /**
  * Пример
  *
- * Вычисление факториала
+ * Вычисление факториала.
  */
 fun factorial(n: Int): Double {
     var result = 1.0
