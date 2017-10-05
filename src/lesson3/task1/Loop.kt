@@ -78,9 +78,19 @@ return result
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
-
-
+fun fib(n: Int): Int {
+    var Fn1 = 1
+    var Fn2 = 1
+    var FnSum = 0
+    if ((n == 1) || (n == 2)) return 1
+    if (n == 0)               return 0
+    for (i in 3..n){
+        FnSum = Fn1 + Fn2
+        Fn1 = Fn2
+        Fn2 = FnSum
+}
+return FnSum
+}
     /**
      * Простая
      *
@@ -89,6 +99,7 @@ fun fib(n: Int): Int = TODO()
      */
 
 fun lcm(m: Int, n: Int): Int = TODO()
+
 
 /**
  * Простая
