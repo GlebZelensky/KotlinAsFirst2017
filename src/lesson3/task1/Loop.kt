@@ -60,7 +60,17 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Найти количество цифр в заданном числе n.
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var n0 = n
+    var result = 0
+    if (n == 0) return 1
+    else
+    while (n0 != 0) {
+        n0 /= 10
+        result += 1
+    }
+return result
+}
 
 /**
  * Простая
@@ -70,12 +80,14 @@ fun digitNumber(n: Int): Int = TODO()
  */
 fun fib(n: Int): Int = TODO()
 
-/**
- * Простая
- *
- * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
- * минимальное число k, которое делится и на m и на n без остатка
- */
+
+    /**
+     * Простая
+     *
+     * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
+     * минимальное число k, которое делится и на m и на n без остатка
+     */
+
 fun lcm(m: Int, n: Int): Int = TODO()
 
 /**
