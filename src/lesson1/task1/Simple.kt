@@ -61,7 +61,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int) = (3600 * hours) + (60 * min
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 * 16 * (3 * sagenes + arshins +  vershoks))/100
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 * 16 * (3 * sagenes + arshins) +  4.445 * vershoks) / 100
 
 /**
  * Тривиальная
@@ -69,7 +69,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 *
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(grad: Int, min: Int, sec: Int): Double = (grad + min/60.0 + sec/3600.0) * PI/180
+fun angleInRadian(grad: Int, min: Int, sec: Int): Double = (grad + min / 60.0 + sec / 3600.0) * PI / 180
 
 /**
  * Тривиальная
@@ -77,7 +77,7 @@ fun angleInRadian(grad: Int, min: Int, sec: Int): Double = (grad + min/60.0 + se
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x2 - x1)+ sqr(y2 - y1))
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x2 - x1) + sqr(y2 - y1))
 
 /**
  * Простая
@@ -103,7 +103,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double =  initial * pow((100.0 + percent)/100.0, 3.0)
+fun accountInThreeYears(initial: Int, percent: Int): Double =  initial * pow((100.0 + percent) / 100.0, 3.0)
 
 /**
  * Простая
@@ -111,4 +111,4 @@ fun accountInThreeYears(initial: Int, percent: Int): Double =  initial * pow((10
  * Пользователь задает целое трехзначное число (например, 478).
  *Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = (number%10 * 100) + ((number/10)%10 * 10) + (number/100)
+fun numberRevert(number: Int): Int = (number % 10 * 100) + ((number / 10) % 10 * 10) + (number / 100)
