@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson1.task1
 
 import lesson6.task1.minContainingCircle
@@ -61,7 +62,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int) = (3600 * hours) + (60 * min
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 * 16 * (3 * sagenes + arshins) +  4.445 * vershoks) / 100
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = 4.445 * ( 16 * (3 * sagenes + arshins) + vershoks) / 100
 
 /**
  * Тривиальная
@@ -103,7 +104,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double =  initial * pow((100.0 + percent) / 100.0, 3.0)
+fun accountInThreeYears(initial: Int, percent: Int): Double = initial * pow((100.0 + percent) / 100.0, 3.0)
 
 /**
  * Простая

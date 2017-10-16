@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -37,16 +38,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    val a = age%10 // извлечь последнюю цифру от числа.
-    val b = age%100 //числа от 11 до 19,  ""11 лет, 12 лет и тд.".
-         if (b in 11..19)             return "$age лет"
-         else
-         if (a == 1)                  return "$age год"
-         else
-         if ((a in 5..9) || (a == 0)) return "$age лет"
-         else
-         if (a in 2..4)               return "$age года"
-    return "Error"
+    val a = age % 10
+    val b = age % 100 //числа от 11 до 19,  ""11 лет, 12 лет и тд.".
+    if (b in 11..19) return "$age лет" else
+        if (a == 1) return "$age год" else
+            if ((a in 5..9) || (a == 0)) return "$age лет" else
+                return "$age года"
 }
 
 /**
@@ -59,19 +56,19 @@ fun ageDescription(age: Int): String {
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    val s1 = v1 * t1                //  расстояние №1.
-    val s2 = v2 * t2                //  расстояние №2.
-    val s3 = v3 * t3                //  расстояние №3.
-    val sHalf = ((s1 + s2 + s3) / 2) // половина всего расстояния.
-    val sDecision1 = t1 + (sHalf - s1) / v2                // Решение условия: ((sHalf > s1) && (sHalf <= s1 + s2)).
-    val sDecision2 = sHalf / v1                            // Решение условия: (sHalf < s1).
-    val sDecision3 = ((sHalf - (s1 + s2)) / v3) + t1 + t2  // Решение условия: (sHalf > s1 + s2).
-    when {
-        ((sHalf > s1) && (sHalf <= s1 + s2)) -> return sDecision1    // Подставляем решения условий
-        (sHalf < s1)                         -> return sDecision2
-        (sHalf > s1 + s2)                    -> return sDecision3
+    val s1 = v1 * t1
+    val s2 = v2 * t2
+    val s3 = v3 * t3
+    val sHalf = s1 + s2 + s3 / 2
+    val sDecision1 = (t1 + sHalf - s1) / v2
+    val sDecision2 = sHalf / v1
+    val sDecision3 = (sHalf - s1 + s2) / v3 + t1 + t2
+    return when {
+        (sHalf > s1) && (sHalf <= s1 + s2) -> sDecision1
+        sHalf <= s1 -> sDecision2
+        else -> sDecision3
+
     }
-    return Double.NaN
 }
 
 
@@ -87,18 +84,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    when {
-        // 1. Если атакуют обе ладьи.
-        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)) -> return 3
-        // 2. Если атакует только вторая ладья.
-        ((kingX == rookX2) || (kingY == rookY2)) && ((kingX != rookX1) || (kingY != rookY1)) -> return 2
-        // 3. Если атакует только первая ладья.
-        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX != rookX2) || (kingY != rookY2)) -> return 1
-        // 4. Если угрозы нет.
-        ((kingY != rookY1) && (kingY != rookY2) && (kingX != rookX1) && (kingX != rookX2))    -> return 0
-
+    val rook1Attacking = ((kingX == rookX1) || (kingY == rookY1))
+    val rook2Attacking = ((kingX == rookX2) || (kingY == rookY2))
+    return when {
+        rook1Attacking && rook2Attacking -> 3
+        rook2Attacking -> 2
+        rook1Attacking -> 1
+        else -> 0
     }
-    return 404
 }
 
 /**
@@ -114,13 +107,16 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    when {
-        ((abs(kingX - bishopX)) == (abs(kingY - bishopY)))  && ((kingX == rookX) || (kingY == rookY)) -> return 3
-        ((abs(kingX - bishopX)) == (abs(kingY - bishopY)))  -> return 2
-        ((kingX == rookX) || (kingY == rookY)) -> return 1
-        else -> return 0
+    val bishopStep = abs(kingX - bishopX) == abs(kingY - bishopY)
+    val rookStep = kingX == rookX || kingY == rookY
+    return when {
+        bishopStep && rookStep -> 3
+        bishopStep -> 2
+        rookStep -> 1
+        else -> 0
     }
 }
+
 
 /**
  * Простая
@@ -131,30 +127,30 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val CheckAngleForA = sqr(b) + sqr(c)
-    val CheckAngleForC = sqr(a) + sqr(b)
-    val CheckAngleForB = sqr(a) + sqr(c)
+    val checkAngleForA = sqr(b) + sqr(c)
+    val checkAngleForC = sqr(a) + sqr(b)
+    val checkAngleForB = sqr(a) + sqr(c)
     if ((a < b + c) && (b < a + c) && (c < b + a)) else return -1  // Если треугольник не существует
     if ((a >= b) && (a >= c))
         when {
-            CheckAngleForA == sqr(a) -> return 1
-            CheckAngleForA > sqr(a)  -> return 0
-            CheckAngleForA < sqr(a)  -> return 2
+            checkAngleForA == sqr(a) -> return 1
+            checkAngleForA > sqr(a) -> return 0
+            checkAngleForA < sqr(a) -> return 2
         }
     else
-    if ((c >= a) && (c >= b))
-    when {
-        CheckAngleForC == sqr(c) -> return 1
-        CheckAngleForC > sqr(c)  -> return 0
-        CheckAngleForC < sqr(c)  -> return 2
-    }
-    else
-    if ((b >= a) && (b >= c))
-    when {
-        CheckAngleForB == sqr(b) -> return 1
-        CheckAngleForB > sqr(b)  -> return 0
-        CheckAngleForB < sqr(b)  -> return 2
-    }
+        if ((c >= a) && (c >= b))
+            when {
+                checkAngleForC == sqr(c) -> return 1
+                checkAngleForC > sqr(c) -> return 0
+                checkAngleForC < sqr(c) -> return 2
+            }
+        else
+            if ((b >= a) && (b >= c))
+                when {
+                    checkAngleForB == sqr(b) -> return 1
+                    checkAngleForB > sqr(b) -> return 0
+                    checkAngleForB < sqr(b) -> return 2
+                }
     return -1
 }
 
@@ -167,23 +163,23 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-        when {
-            // 1. Если пересечение является отрезоком cb.
-            (c > a) && (c < b) && (b < d)            -> return (b - c)
-            // 2. Если пересечение является отрезоком cd.
-            (c < b) && (c > a) && ((b > d) || (b == d)) && (d > a) -> return (d - c)
-            (c < b) && (c == a) && (b > d) && (d > a)              -> return (d - c)
-            // 3. Если пересечение является отрезоком ab.
-            (c < a) && (c < b) && ((d > b) || (d ==b)) && (d > a)  -> return (b - a)
-            (c == a) && (c < b) && (d > b) && (d > a)              -> return (b - a)
-            ((a == c) && (b == d)) -> return (b - a)
-            // 4. Если пересечение является отрезком  ad.
-            (c < a) && (c < b) && (d > a) && (d < b) -> return (d - a)
-            // 5. Если точки не персекаются
-            (a > c) && (a > d) && (b > c) && (b > d) -> return -1
-            (c > a) && (c > b) && (d > a) && (d > b) -> return -1
-            // 6. Если точки отрезков лежат друг на друге или только одна точка одного отрезка лежит на одной точке другого отрезка.
-            else -> return 0
+    when {
+    // 1. Если пересечение является отрезоком cb.
+        (c > a) && (c < b) && (b < d) -> return (b - c)
+    // 2. Если пересечение является отрезоком cd.
+        (c < b) && (c > a) && ((b > d) || (b == d)) && (d > a) -> return (d - c)
+        (c < b) && (c == a) && (b > d) && (d > a) -> return (d - c)
+    // 3. Если пересечение является отрезоком ab.
+        (c < a) && (c < b) && ((d > b) || (d == b)) && (d > a) -> return (b - a)
+        (c == a) && (c < b) && (d > b) && (d > a) -> return (b - a)
+        ((a == c) && (b == d)) -> return (b - a)
+    // 4. Если пересечение является отрезком  ad.
+        (c < a) && (c < b) && (d > a) && (d < b) -> return (d - a)
+    // 5. Если точки не персекаются
+        (a > c) && (a > d) && (b > c) && (b > d) -> return -1
+        (c > a) && (c > b) && (d > a) && (d > b) -> return -1
+    // 6. Если точки отрезков лежат друг на друге или только одна точка одного отрезка лежит на одной точке другого отрезка.
+        else -> return 0
 
-        }
+    }
 }

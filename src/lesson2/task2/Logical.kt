@@ -45,14 +45,10 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean {
-   // Проверим входят ли четыре точки окружности с центром (x1,y1)
-    // Создадим переменные для 4-х точек:
     val p1 = x1 + r1
     val p2 = x1 - r1
     val p3 = y1 + r1
     val p4 = y1 - r1
-    // Проверяем подходят ли эти 4 точки в окружность с центром (x2,y2)
-    // Я взял функцию из примера "pointInsideCircle"
     return pointInsideCircle(x1,y1,x2,y2,r2)
             &&
            pointInsideCircle(p1,y1,x2,y2,r2)
@@ -62,7 +58,6 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
            pointInsideCircle(x1,p3,x2,y2,r2)
             &&
            pointInsideCircle(x1,p4,x2,y2,r2)
-    // если все точки лежат в окружности, то программа должна выдать True.
 }
 
 
