@@ -39,7 +39,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     val a = age % 10
-    val b = age % 100 //числа от 11 до 19,  ""11 лет, 12 лет и тд.".
+    val b = age % 100
     if (b in 11..19) return "$age лет" else
         if (a == 1) return "$age год" else
             if ((a in 5..9) || (a == 0)) return "$age лет" else
@@ -59,15 +59,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val s1 = v1 * t1
     val s2 = v2 * t2
     val s3 = v3 * t3
-    val sHalf = s1 + s2 + s3 / 2
-    val sDecision1 = (t1 + sHalf - s1) / v2
-    val sDecision2 = sHalf / v1
-    val sDecision3 = (sHalf - s1 + s2) / v3 + t1 + t2
+    val sHalf = (s1 + s2 + s3) / 2
     return when {
-        (sHalf > s1) && (sHalf <= s1 + s2) -> sDecision1
-        sHalf <= s1 -> sDecision2
-        else -> sDecision3
-
+        sHalf <= s1 -> sHalf / v1
+        sHalf <= s1 + s2 && sHalf > s1 -> t1 + (sHalf - s1) / v2
+        else -> t1 + t2 +(sHalf - s1 - s2) / v3
     }
 }
 
@@ -127,31 +123,13 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val checkAngleForA = sqr(b) + sqr(c)
-    val checkAngleForC = sqr(a) + sqr(b)
-    val checkAngleForB = sqr(a) + sqr(c)
-    if ((a < b + c) && (b < a + c) && (c < b + a)) else return -1  // Если треугольник не существует
-    if ((a >= b) && (a >= c))
-        when {
-            checkAngleForA == sqr(a) -> return 1
-            checkAngleForA > sqr(a) -> return 0
-            checkAngleForA < sqr(a) -> return 2
-        }
-    else
-        if ((c >= a) && (c >= b))
-            when {
-                checkAngleForC == sqr(c) -> return 1
-                checkAngleForC > sqr(c) -> return 0
-                checkAngleForC < sqr(c) -> return 2
-            }
-        else
-            if ((b >= a) && (b >= c))
-                when {
-                    checkAngleForB == sqr(b) -> return 1
-                    checkAngleForB > sqr(b) -> return 0
-                    checkAngleForB < sqr(b) -> return 2
-                }
-    return -1
+    var midV = (a + b + c) - maxOf(a,b,c) - minOf(a,b,c)
+    if ((a + b > c) && (a + c > b) && (b + c > a))
+       return  when {
+            sqr(maxOf(a,b,c)) < sqr(midV) + sqr(minOf(a,b,c)) -> 0
+            sqr(maxOf(a,b,c)) == sqr(midV) + sqr(minOf(a,b,c)) -> 1
+            else -> 2
+        } else return -1
 }
 
 /**
@@ -162,24 +140,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    when {
-    // 1. Если пересечение является отрезоком cb.
-        (c > a) && (c < b) && (b < d) -> return (b - c)
-    // 2. Если пересечение является отрезоком cd.
-        (c < b) && (c > a) && ((b > d) || (b == d)) && (d > a) -> return (d - c)
-        (c < b) && (c == a) && (b > d) && (d > a) -> return (d - c)
-    // 3. Если пересечение является отрезоком ab.
-        (c < a) && (c < b) && ((d > b) || (d == b)) && (d > a) -> return (b - a)
-        (c == a) && (c < b) && (d > b) && (d > a) -> return (b - a)
-        ((a == c) && (b == d)) -> return (b - a)
-    // 4. Если пересечение является отрезком  ad.
-        (c < a) && (c < b) && (d > a) && (d < b) -> return (d - a)
-    // 5. Если точки не персекаются
-        (a > c) && (a > d) && (b > c) && (b > d) -> return -1
-        (c > a) && (c > b) && (d > a) && (d > b) -> return -1
-    // 6. Если точки отрезков лежат друг на друге или только одна точка одного отрезка лежит на одной точке другого отрезка.
-        else -> return 0
-
-    }
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    c in (a + 1)..(b - 1) && b < d -> b - c
+    c > a && b > d || b == d -> d - c
+    c < b && c == a && b > d && d > a -> d - c
+    c < a && c < b && d > b || d == b && d > a -> b - a
+    c == a && c < b && d > b && d > a -> b - a
+    a == c && b == d -> b - a
+    c < a&& c < b && d > a && d < b -> d - a
+    a > c && a > d && b > c && b > d -> -1
+    c > a && c > b && d > a && d > b -> -1
+    else -> 0
 }

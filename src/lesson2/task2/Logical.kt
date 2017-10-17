@@ -18,13 +18,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean {
-    val first  = number/1000
-    val second = (number/100)%10
-    val third  = (number/10)%10
-    val fourth = number%10
-    return first + second == third + fourth
-}
+fun isNumberHappy(number: Int): Boolean = number / 1000 + ( number / 100 ) % 10 == (number / 10) % 10 + number % 10
 
 /**
  * Простая
@@ -34,7 +28,7 @@ fun isNumberHappy(number: Int): Boolean {
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-        ((Math.abs(x1 - x2)) == (Math.abs(y1 - y2))) || ((x1 == x2) || (y1 == y2))
+        Math.abs(x1 - x2) == Math.abs(y1 - y2) || x1 == x2|| y1 == y2
 
 /**
  * Средняя
@@ -49,14 +43,10 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
     val p2 = x1 - r1
     val p3 = y1 + r1
     val p4 = y1 - r1
-    return pointInsideCircle(x1,y1,x2,y2,r2)
-            &&
-           pointInsideCircle(p1,y1,x2,y2,r2)
-            &&
-           pointInsideCircle(p2,y1,x2,y2,r2)
-            &&
-           pointInsideCircle(x1,p3,x2,y2,r2)
-            &&
+    return pointInsideCircle(x1,y1,x2,y2,r2) &&
+           pointInsideCircle(p1,y1,x2,y2,r2) &&
+           pointInsideCircle(p2,y1,x2,y2,r2) &&
+           pointInsideCircle(x1,p3,x2,y2,r2) &&
            pointInsideCircle(x1,p4,x2,y2,r2)
 }
 
@@ -71,13 +61,6 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    // Минимальная сторона у кирпича.
-    val MinFromABC = minOf(a,b,c)
-    // Средняя сторона у кирпича.
-    val MidFromABC = (a + b + c) - maxOf(a,b,c) - MinFromABC
-    // Min сторона у отверстия.
-    val MinFromRS = minOf(r,s)
-    // Max сторона у отверстия.
-    val MaxFromRS = (r + s) - MinFromRS
-    return (MinFromABC <= MinFromRS) && (MidFromABC <= MaxFromRS)
+    val mid = (a + b + c) - maxOf(a,b,c) - minOf(a,b,c)
+    return minOf(a,b,c) <= minOf(r,s) && mid <= r + s - minOf(r,s)
 }
