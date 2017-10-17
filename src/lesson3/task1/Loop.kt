@@ -108,7 +108,7 @@ fun lcm(m: Int, n: Int): Int {
     while (mgcd != 0 && ngcd != 0) {
         if (mgcd > ngcd) mgcd %= ngcd else ngcd %= mgcd
     }
-    return abs(m * n) / mgcd + ngcd
+    return abs(m * n) / (mgcd + ngcd)
 }
 
 
