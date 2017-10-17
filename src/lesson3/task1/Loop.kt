@@ -1,5 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
+
+import java.lang.Math.abs
 
 /**
  * Пример
@@ -34,7 +37,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -65,11 +68,11 @@ fun digitNumber(n: Int): Int {
     var result = 0
     if (n == 0) return 1
     else
-    while (n0 != 0) {
-        n0 /= 10
-        result += 1
-    }
-return result
+        while (n0 != 0) {
+            n0 /= 10
+            result += 1
+        }
+    return result
 }
 
 /**
@@ -83,22 +86,30 @@ fun fib(n: Int): Int {
     var Fn2 = 1
     var FnSum = 0
     if ((n == 1) || (n == 2)) return 1
-    if (n == 0)               return 0
-    for (i in 3..n){
+    if (n == 0) return 0
+    for (i in 3..n) {
         FnSum = Fn1 + Fn2
         Fn1 = Fn2
         Fn2 = FnSum
+    }
+    return FnSum
 }
-return FnSum
-}
-    /**
-     * Простая
-     *
-     * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
-     * минимальное число k, которое делится и на m и на n без остатка
-     */
 
-fun lcm(m: Int, n: Int): Int = TODO()
+/**
+ * Простая
+ *
+ * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
+ * минимальное число k, которое делится и на m и на n без остатка
+ */
+
+fun lcm(m: Int, n: Int): Int {
+    var mgcd = m
+    var ngcd = n
+    while (mgcd != 0 && ngcd != 0) {
+        if (mgcd > ngcd) mgcd %= ngcd else ngcd %= mgcd
+    }
+    return abs(m * n) / mgcd + ngcd
+}
 
 
 /**
@@ -106,7 +117,13 @@ fun lcm(m: Int, n: Int): Int = TODO()
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var minDiv = 2
+    while (n % minDiv != 0) {
+        minDiv += 1
+    }
+    return minDiv
+}
 
 /**
  * Простая
@@ -114,6 +131,7 @@ fun minDivisor(n: Int): Int = TODO()
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int = TODO()
+
 
 /**
  * Простая
