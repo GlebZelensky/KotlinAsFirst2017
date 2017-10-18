@@ -124,12 +124,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var midV = (a + b + c) - maxOf(a,b,c) - minOf(a,b,c)
-    if ((a + b > c) && (a + c > b) && (b + c > a))
-       return  when {
+    return if ((a + b > c) && (a + c > b) && (b + c > a))
+        when {
             sqr(maxOf(a,b,c)) < sqr(midV) + sqr(minOf(a,b,c)) -> 0
             sqr(maxOf(a,b,c)) == sqr(midV) + sqr(minOf(a,b,c)) -> 1
             else -> 2
-        } else return -1
+        } else -1
 }
 
 /**
@@ -145,6 +145,6 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
     c < b && c == a && b > d && d > a || c > a && b > d || b == d -> d - c
     a == c && b == d || a > c && b < d || a == c && b < d || b == d && a > c -> b - a
     c < a && c < b && d > a && d < b -> d - a
-    a == d || c == b -> 0
+    a == d  || c == b || a == b || c == d -> 0
     else -> -1
 }
