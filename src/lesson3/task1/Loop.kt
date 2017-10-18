@@ -103,12 +103,12 @@ fun fib(n: Int): Int {
  */
 
 fun lcm(m: Int, n: Int): Int {
-    var mgcd = m
-    var ngcd = n
-    while (mgcd != 0 && ngcd != 0) {
-        if (mgcd > ngcd) mgcd %= ngcd else ngcd %= mgcd
+    var gcd1 = m
+    var gcd2 = n
+    while (gcd1 != 0 && gcd2 != 0) {
+        if (gcd1 > gcd2) gcd1 %= gcd2 else gcd2 %= gcd1
     }
-    return abs(m * n) / (mgcd + ngcd)
+    return abs(m * n) / (gcd1 + gcd2)
 }
 
 
@@ -119,9 +119,7 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var minDiv = 2
-    while (n % minDiv != 0) {
-        minDiv += 1
-    }
+    while (n % minDiv != 0) minDiv += 1
     return minDiv
 }
 
@@ -130,7 +128,11 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var maxDiv = 2
+    while (n % maxDiv != 0) maxDiv += 1
+    return n / maxDiv
+}
 
 
 /**
@@ -141,6 +143,8 @@ fun maxDivisor(n: Int): Int = TODO()
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+
+
 
 /**
  * Простая
