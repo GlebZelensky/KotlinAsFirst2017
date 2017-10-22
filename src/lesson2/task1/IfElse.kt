@@ -42,8 +42,7 @@ fun ageDescription(age: Int): String {
     val b = age % 100
     if (b in 11..19) return "$age лет" else
         if (a == 1) return "$age год" else
-            if ((a in 5..9) || (a == 0)) return "$age лет" else
-                return "$age года"
+            if ((a in 5..9) || (a == 0)) return "$age лет" else return "$age года"
 }
 
 /**
@@ -62,7 +61,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val sHalf = (s1 + s2 + s3) / 2
     return when {
         sHalf <= s1 -> sHalf / v1
-        sHalf <= s1 + s2 && sHalf > s1 -> t1 + (sHalf - s1) / v2
+        sHalf <= s1 + s2 -> t1 + (sHalf - s1) / v2
         else -> t1 + t2 +(sHalf - s1 - s2) / v3
     }
 }
@@ -123,11 +122,13 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var midV = (a + b + c) - maxOf(a,b,c) - minOf(a,b,c)
+    var midNum = sqr((a + b + c) - maxOf(a,b,c) - minOf(a,b,c))
+    var minNum = sqr(minOf(a,b,c))
+    var maxNum = sqr(maxOf(a,b,c))
     return if ((a + b > c) && (a + c > b) && (b + c > a))
         when {
-            sqr(maxOf(a,b,c)) < sqr(midV) + sqr(minOf(a,b,c)) -> 0
-            sqr(maxOf(a,b,c)) == sqr(midV) + sqr(minOf(a,b,c)) -> 1
+            maxNum < midNum + minNum -> 0
+            maxNum == midNum + minNum -> 1
             else -> 2
         } else -1
 }
