@@ -40,9 +40,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     val a = age % 10
     val b = age % 100
-    if (b in 11..19) return "$age лет" else
-        if (a == 1) return "$age год" else
-            if ((a in 5..9) || (a == 0)) return "$age лет" else return "$age года"
+    return if (b in 11..19) "$age лет" else
+        if (a == 1) "$age год" else
+            if ((a in 5..9) || (a == 0)) "$age лет" else "$age года"
 }
 
 /**
@@ -122,9 +122,9 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var midNum = sqr((a + b + c) - maxOf(a,b,c) - minOf(a,b,c))
-    var minNum = sqr(minOf(a,b,c))
-    var maxNum = sqr(maxOf(a,b,c))
+    val midNum = sqr((a + b + c) - maxOf(a,b,c) - minOf(a,b,c))
+    val minNum = sqr(minOf(a,b,c))
+    val maxNum = sqr(maxOf(a,b,c))
     return if ((a + b > c) && (a + c > b) && (b + c > a))
         when {
             maxNum < midNum + minNum -> 0
