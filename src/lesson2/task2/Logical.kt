@@ -14,16 +14,19 @@ import javax.sound.midi.MidiChannel
 fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
         sqr(x - x0) + sqr(y - y0) <= sqr(r)
 
+fun halfOfNumberHappy(number: Int): Int {
+    val digit1 = number % 100 / 10
+    val digit2 = number % 10
+    return digit1 + digit2
+}
 /**
  * Простая
  *
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean {
-    val num = number / 100
-    return num / 10 + num % 10 == ((number / 10) + number) % 10
-}
+fun isNumberHappy(number: Int): Boolean = halfOfNumberHappy(number) == halfOfNumberHappy(number / 100)
+
 
 
 /**

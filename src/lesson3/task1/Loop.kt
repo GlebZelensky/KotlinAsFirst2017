@@ -2,7 +2,6 @@
 
 package lesson3.task1
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.OutputUtil.writeln
 import java.lang.Math.*
 
 /**
@@ -127,7 +126,8 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     var maxDiv = 2
-    while (n % maxDiv != 0) maxDiv += 1
+    for (i in 1..n)
+    if (n % maxDiv != 0) maxDiv += 1
     return n / maxDiv
 }
 
@@ -170,8 +170,8 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double = TODO()
-    //var a = 1
-    //while (a > eps) { a = pow(x, a.toDouble())/factorial(a) - pow(x,a + 2.0)/factorial(a + 2)
+        // minus *= -1
+        //sinx += minus * pow(x, pow)/factorial(pow.toInt())
 
 
 
@@ -187,7 +187,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
 /**
  * Средняя
  *
- * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
+ * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431. 
  * Не использовать строки при решении задачи.
  */
 fun revert(n: Int): Int {
