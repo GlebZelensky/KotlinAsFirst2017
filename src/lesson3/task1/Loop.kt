@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.util.OutputUtil.writeln
 import java.lang.Math.*
 
 /**
@@ -235,6 +236,7 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean = TODO()
+
 
 /**
  * Сложная
