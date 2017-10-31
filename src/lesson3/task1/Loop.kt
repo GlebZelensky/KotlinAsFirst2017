@@ -126,10 +126,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var maxDiv = 2
-    for (i in 1..n)
-    if (n % maxDiv != 0) maxDiv += 1
-    return n / maxDiv
+    var maxDiv = n - 1
+    for (i in maxDiv downTo 1)
+    if (n % maxDiv != 0) maxDiv -= 1
+    return maxDiv
 }
 
 
@@ -235,7 +235,20 @@ fun isPalindrome(n: Int): Boolean {
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    if (n / 10 == 0) return false 
+    var nMeter = n
+    var firDigit = 0
+    var secDigit = 0
+    while (nMeter > 0) {
+        if (firDigit != secDigit) return firDigit != secDigit
+        firDigit = nMeter % 10
+        nMeter /= 10
+        if (nMeter / 10 != 0) secDigit = nMeter % 10
+    }
+  return firDigit != secDigit
+}
+
 
 
 /**
