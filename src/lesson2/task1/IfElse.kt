@@ -5,6 +5,7 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import java.lang.Math.abs
+import java.lang.Math.sqrt
 import kotlin.reflect.jvm.internal.impl.util.Check
 
 /**
@@ -40,9 +41,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     val a = age % 10
     val b = age % 100
-    return if (b in 11..19) "$age лет" else
-        if (a == 1) "$age год" else
-            if ((a in 5..9) || (a == 0)) "$age лет" else "$age года"
+    return when {(b in 11..19) -> "$age лет"
+        (a == 1) ->  "$age год"
+        ((a in 5..9) || (a == 0)) -> "$age лет"
+        else -> "$age года"}
 }
 
 /**
@@ -122,15 +124,15 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val midNum = sqr((a + b + c) - maxOf(a,b,c) - minOf(a,b,c))
+    if ((a + b > c) && (a + c > b) && (b + c > a)) else return -1
     val minNum = sqr(minOf(a,b,c))
     val maxNum = sqr(maxOf(a,b,c))
-    return if ((a + b > c) && (a + c > b) && (b + c > a))
-        when {
+    val midNum = sqr((a + b + c) - sqrt(maxNum) - sqrt(minNum))
+    return when {
             maxNum < midNum + minNum -> 0
             maxNum == midNum + minNum -> 1
             else -> 2
-        } else -1
+        }
 }
 
 /**
