@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.OutputUtil.writeln
+import lesson1.task1.sqr
 import java.lang.Math.*
 
 /**
@@ -104,7 +105,9 @@ fun fib(n: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var gcd1 = m
     var gcd2 = n
-    while (gcd1 != 0 && gcd2 != 0) {if (gcd1 > gcd2) gcd1 %= gcd2 else gcd2 %= gcd1}
+    while (gcd1 != 0 && gcd2 != 0) {
+        if (gcd1 > gcd2) gcd1 %= gcd2 else gcd2 %= gcd1
+    }
     return m / (gcd1 + gcd2) * n
 }
 
@@ -158,7 +161,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if (m == 0 && n == 0) return true
-    for (i in minOf(m, n)..maxOf(m, n)) if (i % sqrt(i.toDouble()) == 0.0) return true
+    for (i in m..n) {
+     val sqrtDigit = sqrt(i.toDouble()).toInt()
+        if (sqr(sqrtDigit.toDouble()).toInt() == i ) return true
+    }
     return false
 }
 
@@ -210,20 +216,15 @@ fun revert(n: Int): Int {
 fun isPalindrome(n: Int): Boolean {
 
     var right = 0
-    var n1 = n
-    var sumDigit = 0
+    val digit = digitNumber(n)
     var left = n
-    while (n1 != 0) {
-        n1 /= 10
-        sumDigit += 1
-    }
-    if (sumDigit == 1) return true
-    for (i in 1..sumDigit / 2) {
+    if (digit == 1) return true
+    for (i in 1..digit / 2) {
         right *= 10
         right += left % 10
         left /= 10
     }
-    if (sumDigit % 2 != 0) left /= 10
+    if (digit % 2 != 0) left /= 10
     return left == right
 }
 
