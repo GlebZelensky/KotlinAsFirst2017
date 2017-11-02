@@ -162,8 +162,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if (m == 0 && n == 0) return true
     for (i in m..n) {
-     val sqrtDigit = sqrt(i.toDouble()).toInt()
-        if (sqr(sqrtDigit.toDouble()).toInt() == i ) return true
+        val sqrtDigit = sqrt(i.toDouble()).toInt()
+        if (sqr(sqrtDigit.toDouble()).toInt() == i) return true
     }
     return false
 }
@@ -175,13 +175,13 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double  {
+fun sin(x: Double, eps: Double): Double {
     var result = 0.0
     var calc = x
     val sequence = x % (2 * PI)
     var pow = 1.0
     var minus = 1
-    while (eps < calc) {
+    while (eps < abs(calc)) {
         calc = pow(sequence, pow) / factorial(pow.toInt())
         result += calc * minus
         minus *= -1
@@ -204,7 +204,7 @@ fun cos(x: Double, eps: Double): Double {
     var n = x
     val sequence = x % (2 * PI)
     var pow = 2.0
-    while (eps < n) {
+    while (eps < abs(n)) {
         n = pow(sequence, pow) / factorial(pow.toInt())
         result += n * minus
         minus *= -1
@@ -212,6 +212,7 @@ fun cos(x: Double, eps: Double): Double {
     }
     return result
 }
+
 /**
  * Средняя
  *
@@ -280,6 +281,21 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int = TODO()
+  /*  var m = 0
+    var k = 0
+    while (m < n) {
+        k++
+        var b = k * k
+        var j = 10
+        var c = 0
+        if (b / j != 0) {
+            j *= 10
+            c += 1
+        }
+        m += c
+    }
+
+} */
 
 /**
  * Сложная
