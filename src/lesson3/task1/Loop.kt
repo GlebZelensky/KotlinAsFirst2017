@@ -181,7 +181,7 @@ fun sin(x: Double, eps: Double): Double  {
     val sequence = x % (2 * PI)
     var pow = 1.0
     var minus = 1
-    while (eps <= calc) {
+    while (eps < calc) {
         calc = pow(sequence, pow) / factorial(pow.toInt())
         result += calc * minus
         minus *= -1
@@ -199,12 +199,12 @@ fun sin(x: Double, eps: Double): Double  {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
+    var minus = -1
     var result = 1.0
     var n = x
     val sequence = x % (2 * PI)
     var pow = 2.0
-    var minus = -1
-    while (eps <= n) {
+    while (eps < n) {
         n = pow(sequence, pow) / factorial(pow.toInt())
         result += n * minus
         minus *= -1
