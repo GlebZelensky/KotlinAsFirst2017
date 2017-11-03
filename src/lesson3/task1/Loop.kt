@@ -83,14 +83,14 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var fibn1 = 1
-    var fibn2 = 1
+    var fib1 = 1
+    var fib2 = 1
     var fibSum = 0
     if ((n == 1) || (n == 2)) return 1
     for (i in 3..n) {
-        fibSum = fibn1 + fibn2
-        fibn1 = fibn2
-        fibn2 = fibSum
+        fibSum = fib1 + fib2
+        fib1 = fib2
+        fib2 = fibSum
     }
     return fibSum
 }
@@ -280,22 +280,26 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
-  /*  var m = 0
-    var k = 0
-    while (m < n) {
-        k++
-        var b = k * k
-        var j = 10
-        var c = 0
-        if (b / j != 0) {
-            j *= 10
-            c += 1
-        }
-        m += c
+fun squareSequenceDigit(n: Int): Int {
+    var digits = 0
+    var sqrNumber = 1
+    var digNumber = 0
+    while (digNumber < n) {
+        digits += 1
+        sqrNumber = digits * digits
+        digNumber += digitNumber(sqrNumber)
     }
-
-} */
+    if (digNumber == n) return sqrNumber % 10
+    else while (digNumber > n) {
+        sqrNumber /= 10
+        digNumber -= 1
+    }
+    if (digNumber == n) return sqrNumber % 10
+    while (sqrNumber / 10 != 0) {
+        sqrNumber /= 10
+    }
+return sqrNumber
+}
 
 /**
  * Сложная
@@ -304,4 +308,23 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var digits = 0
+    var fib = 1
+    var digNumber = 0
+    while (digNumber < n) {
+        digits += 1
+        fib = lesson3.task1.fib(digits)
+        digNumber += digitNumber(fib)
+    }
+    if (digNumber == n) return fib % 10
+    else while (digNumber > n) {
+        fib /= 10
+        digNumber -= 1
+    }
+    if (digNumber == n) return fib % 10
+    while (fib / 10 != 0) {
+        fib /= 10
+    }
+    return fib
+}
