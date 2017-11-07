@@ -95,22 +95,22 @@ fun fib(n: Int): Int {
     return fibSum
 }
 
+fun gcd(m: Int, n: Int): Int {
+    var m1 = m
+    var n1 = n
+    while (m1 != n1) {
+        if (m1 > n1) m1 -= n1 else n1 -= m1
+    }
+    return m1
+}
+
 /**
  * Простая
  *
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-
-fun lcm(m: Int, n: Int): Int {
-    var gcd1 = m
-    var gcd2 = n
-    while (gcd1 != 0 && gcd2 != 0) {
-        if (gcd1 > gcd2) gcd1 %= gcd2 else gcd2 %= gcd1
-    }
-    return m / (gcd1 + gcd2) * n
-}
-
+fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
 
 /**
  * Простая
@@ -118,6 +118,7 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
+    if (isPrime(n)) return n
     for (i in 2 until n)
         if (n % i == 0) return i
     return n
@@ -129,6 +130,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
+    if (isPrime(n)) return 1
     for (i in n - 1 downTo 2)
         if (n % i == 0) return i
     return 1
@@ -142,14 +144,8 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var m1 = m
-    var n1 = n
-    while (m1 != n1) {
-        if (m1 >= n1) m1 -= n1 else n1 -= m1
-    }
-    return m1 == 1 && n1 == 1
-}
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
+
 
 
 /**
@@ -221,7 +217,7 @@ fun cos(x: Double, eps: Double): Double {
  */
 fun revert(n: Int): Int {
     var n1 = n
-    var rev1 = 0.toLong()
+    var rev1 = 0L
     while (n1 != 0) {
         val rev = n1 % 10
         rev1 = (rev1 + rev) * 10
@@ -294,11 +290,7 @@ fun squareSequenceDigit(n: Int): Int {
         sqrNumber /= 10
         digNumber -= 1
     }
-    if (digNumber == n) return sqrNumber % 10
-    while (sqrNumber / 10 != 0) {
-        sqrNumber /= 10
-    }
-return sqrNumber
+    return sqrNumber % 10
 }
 
 /**
@@ -322,9 +314,5 @@ fun fibSequenceDigit(n: Int): Int {
         fib /= 10
         digNumber -= 1
     }
-    if (digNumber == n) return fib % 10
-    while (fib / 10 != 0) {
-        fib /= 10
-    }
-    return fib
+    return fib % 10
 }
