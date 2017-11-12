@@ -147,7 +147,6 @@ fun maxDivisor(n: Int): Int {
 fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
 
 
-
 /**
  * Простая
  *
@@ -156,7 +155,6 @@ fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    if (m == 0 && n == 0) return true
     for (i in m..n) {
         val sqrtDigit = sqrt(i.toDouble()).toInt()
         if (sqr(sqrtDigit.toDouble()).toInt() == i) return true
@@ -234,7 +232,6 @@ fun revert(n: Int): Int {
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean {
-
     var right = 0
     val digit = digitNumber(n)
     var left = n
@@ -256,18 +253,16 @@ fun isPalindrome(n: Int): Boolean {
  */
 fun hasDifferentDigits(n: Int): Boolean {
     if (n / 10 == 0) return false
-    var nMeter = n
-    var firDigit = 0
-    var secDigit = 0
-    while (nMeter > 0) {
-        if (firDigit != secDigit) return firDigit != secDigit
-        firDigit = nMeter % 10
-        nMeter /= 10
-        if (nMeter / 10 != 0) secDigit = nMeter % 10
+    val c = n % 10
+    var n1 = n
+    for (i in 1 until digitNumber(n)) {
+        val pow = i.toDouble()
+        n1 /= 10
+        val result = n1 % pow(10.0, pow)
+        if (c.toDouble() != result) return true
     }
-    return firDigit != secDigit
+    return false
 }
-
 
 /**
  * Сложная
