@@ -215,13 +215,12 @@ fun cos(x: Double, eps: Double): Double {
  */
 fun revert(n: Int): Int {
     var n1 = n
-    var rev1 = 0L
+    var rev = 0L
     while (n1 != 0) {
-        val rev = n1 % 10
-        rev1 = (rev1 + rev) * 10
+        rev = (rev + n1 % 10) * 10
         n1 /= 10
     }
-    return (rev1 / 10).toInt()
+    return (rev / 10).toInt()
 }
 
 /**
