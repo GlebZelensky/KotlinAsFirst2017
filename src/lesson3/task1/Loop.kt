@@ -118,7 +118,7 @@ fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2 until n / 2)
+    for (i in 2..Math.sqrt(n.toDouble()).toInt())
         if (n % i == 0) return i
     return n
 }
@@ -167,19 +167,26 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double {
-    var result = 0.0
-    var calc = x
+fun decisionSinCos(x: Double, eps: Double, pow: Double, minus: Int, result: Double): Double {
+    var result1 = result
+    var n = x
     val sequence = x % (2 * PI)
-    var pow = 1.0
-    var minus = 1
-    while (eps < abs(calc)) {
-        calc = pow(sequence, pow) / factorial(pow.toInt())
-        result += calc * minus
-        minus *= -1
-        pow += 2.0
+    var pow1 = pow
+    var minus1 = minus
+    while (eps < abs(n)) {
+        n = pow(sequence, pow1) / factorial(pow1.toInt())
+        result1 += n * minus1
+        minus1 *= -1
+        pow1 += 2.0
     }
-    return result
+    return result1
+}
+
+fun sin(x: Double, eps: Double): Double {
+    val pow = 1.0
+    val minus = 1
+    val result = 0.0
+   return decisionSinCos(x, eps, pow, minus, result)
 }
 
 
@@ -191,20 +198,11 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var minus = -1
-    var result = 1.0
-    var n = x
-    val sequence = x % (2 * PI)
-    var pow = 2.0
-    while (eps < abs(n)) {
-        n = pow(sequence, pow) / factorial(pow.toInt())
-        result += n * minus
-        minus *= -1
-        pow += 2.0
-    }
-    return result
+    val minus = -1
+    val pow = 2.0
+    val result = 1.0
+    return decisionSinCos(x, eps, pow, minus, result)
 }
-
 /**
  * Средняя
  *
@@ -213,12 +211,12 @@ fun cos(x: Double, eps: Double): Double {
  */
 fun revert(n: Int): Int {
     var n1 = n
-    var rev = 0L
+    var rev = 0
     while (n1 != 0) {
-        rev = (rev + n1 % 10) * 10
+        rev = rev * 10 + (n1 % 10)
         n1 /= 10
     }
-    return (rev / 10).toInt()
+    return rev
 }
 
 /**
@@ -232,7 +230,6 @@ fun isPalindrome(n: Int): Boolean {
     var right = 0
     val digit = digitNumber(n)
     var left = n
-    if (digit == 1) return true
     for (i in 1..digit / 2) {
         right *= 10
         right += left % 10
@@ -268,21 +265,26 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
+fun digNumber(digNumber: Int, result: Int, n: Int): Int {
+    var result1 = result
+    var digNumber1 = digNumber
+    if (digNumber1 == n) return result1 % 10
+    else while (digNumber1 > n) {
+        result1 /= 10
+        digNumber1 -= 1
+    }
+    return result1 % 10
+}
 fun squareSequenceDigit(n: Int): Int {
     var digits = 0
-    var sqrNumber = 1
+    var result = 1
     var digNumber = 0
     while (digNumber < n) {
         digits += 1
-        sqrNumber = digits * digits
-        digNumber += digitNumber(sqrNumber)
+        result = digits * digits
+        digNumber += digitNumber(result)
     }
-    if (digNumber == n) return sqrNumber % 10
-    else while (digNumber > n) {
-        sqrNumber /= 10
-        digNumber -= 1
-    }
-    return sqrNumber % 10
+    return digNumber(digNumber, result, n)
 }
 
 /**
@@ -294,17 +296,12 @@ fun squareSequenceDigit(n: Int): Int {
  */
 fun fibSequenceDigit(n: Int): Int {
     var digits = 0
-    var fib = 1
+    var result = 1
     var digNumber = 0
     while (digNumber < n) {
         digits += 1
-        fib = lesson3.task1.fib(digits)
-        digNumber += digitNumber(fib)
+        result = lesson3.task1.fib(digits)
+        digNumber += digitNumber(result)
     }
-    if (digNumber == n) return fib % 10
-    else while (digNumber > n) {
-        fib /= 10
-        digNumber -= 1
-    }
-    return fib % 10
+    return digNumber(digNumber, result, n)
 }
