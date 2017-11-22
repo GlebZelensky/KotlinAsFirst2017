@@ -9,6 +9,7 @@ import java.lang.Double.NaN
 import java.lang.Math.pow
 import java.lang.Math.sqrt
 import java.util.Collections.list
+import javax.lang.model.element.NestingKind
 
 /**
  * Пример
@@ -313,35 +314,7 @@ fun decimalFromString(str: String, base: Int): Int  {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String {
-    val romanDigits = mapOf(1 to "I", 2 to "II", 3 to "III", 4 to "IV", 5 to "V", 6 to "VI",
-            7 to "VII", 8 to "VIII", 9 to "IX", 10 to "X", 20 to "XX", 30 to "XXX", 40 to "XL",
-            50 to "L", 60 to "LX", 70 to "LXX", 80 to "LXXX", 90 to "XC", 100 to "C", 200 to "CC", 300 to "CCC",
-            400 to "CD", 500 to "D", 600 to "DC", 700 to "DCC", 800 to "DCCC", 900 to "CM", 1000 to "M")
-    val result = mutableListOf<String>()
-    var n1 = n
-    if (n1 > 10 && n1 != 0) {
-       var resultDigit = (n1 / pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
-       if (digitNumber(n1) > 3) {
-           for (i in 1..resultDigit) {
-               result.add("M")
-           }
-           n1 %= (pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
-           resultDigit = (n1 / pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
-       }
-        while (digitNumber(n1) != 1) {
-            result.add(romanDigits[resultDigit * (pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()] ?: "")
-            n1 %= (pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
-            resultDigit = (n1 / pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
-        }
-
-    }
-    if (n1 < 10 && n1 != 0)  {
-        result.add(romanDigits[n1] ?: "")
-        return result.joinToString(separator = "")
-    }
-    return result.joinToString(separator = "")
-}
+fun roman(n: Int): String = TODO()
 /**
  * Очень сложная
  *
@@ -349,4 +322,55 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val dozens = listOf("десять","двадцать","тридцать","сорок","пятьдесят",
+            "шестьдесят","семьдесят","восемьдесят","девяносто")
+    val decade = listOf("десять","одиннадцать","двенадцать","тринадцать","четырнадцать",
+            "пятнадцать","шестнадцать","семнадцать","восемнадцать","девятнадцать")
+    val hundreds = listOf("сто","двести","триста","четыреста","пятьсот","шестьсот","семьсот","восемьсот","девятьсот")
+    if (n < 1000) return forHundreds(n,dozens,decade,hundreds)
+    else {
+        val result = mutableListOf<String>()
+        val thousands = listOf("тысяч","одна тысяча","две тысячи","три тысячи","четыре тысячи",
+                "пять тысяч","шесть тысяч","семь тысяч","восемь тысяч","девять тысяч")
+        if (n >= 100000) {
+            result.add(hundreds[(n / 100000) - 1])
+        }
+        val n1 = n % 100000
+        if (n1 >= 10000) {
+            if (n1 in 10000..19999) {
+                result.add(decade[((n1 / 1000) % 10)])
+                return if (forHundreds(n % 1000,dozens,decade,hundreds).isEmpty())
+                    result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000,dozens,decade,hundreds)
+                else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000,dozens,decade,hundreds)
+            }
+            else result.add(dozens[(n1 / 10000) - 1])
+        }
+        if (n1 >= 1000) {
+            result.add(thousands[n % 10000 / 1000])
+        } else return if (forHundreds(n % 1000,dozens,decade,hundreds).isEmpty())
+            result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000,dozens,decade,hundreds)
+        else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000,dozens,decade,hundreds)
+        return result.joinToString(separator = " ") + " " + forHundreds(n % 1000,dozens,decade,hundreds)
+    }
+    }
+fun forHundreds(n: Int, dozens: List<String>, decade: List<String>, hundreds: List<String>): String {
+    val units = listOf("один","два","три","четыре","пять","шесть","семь","восемь","девять")
+    val result = mutableListOf<String>()
+    var n1 = n
+    if (n >= 100) {
+        result.add(hundreds[(n / 100) - 1])
+        n1 = n % 100
+    }
+    if (n1 >= 10) {
+        if (n1 in 10..19) {
+            result.add(decade[(n1 % 10)])
+            return result.joinToString(separator = " ")
+        }
+        result.add(dozens[(n1 / 10) - 1])
+    }
+    if (n1 > 0) {
+        result.add(units[n % 10 - 1])
+    }
+    return result.joinToString(separator = " ")
+}
