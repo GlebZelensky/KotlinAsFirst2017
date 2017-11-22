@@ -368,9 +368,10 @@ fun forHundreds(n: Int, dozens: List<String>, decade: List<String>, hundreds: Li
             return result.joinToString(separator = " ")
         }
         result.add(dozens[(n1 / 10) - 1])
+        n1 = n % 10
     }
     if (n1 > 0) {
-        result.add(units[n % 10 - 1])
+        result.add(units[n1 - 1])
     }
     return result.joinToString(separator = " ")
 }
