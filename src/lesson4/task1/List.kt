@@ -317,51 +317,31 @@ fun roman(n: Int): String {
     val romanDigits = mapOf(1 to "I", 2 to "II", 3 to "III", 4 to "IV", 5 to "V", 6 to "VI",
             7 to "VII", 8 to "VIII", 9 to "IX", 10 to "X", 20 to "XX", 30 to "XXX", 40 to "XL",
             50 to "L", 60 to "LX", 70 to "LXX", 80 to "LXXX", 90 to "XC", 100 to "C", 200 to "CC", 300 to "CCC",
-            400 to "CD", 500 to "D", 600 to "DC", 700 to "DCC", 800 to "DCCC", 900 to "CM", 1000 to "M", 2000 to "MM",
-            3000 to "MMM", 3999 to "MMMCMXCIX")
+            400 to "CD", 500 to "D", 600 to "DC", 700 to "DCC", 800 to "DCCC", 900 to "CM", 1000 to "M")
     val result = mutableListOf<String>()
-    if (n < 10) {
-        result.add(romanDigits[n] ?: "")
+    var n1 = n
+    if (n1 > 10 && n1 != 0) {
+       var resultDigit = (n1 / pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
+       if (digitNumber(n1) > 3) {
+           for (i in 1..resultDigit) {
+               result.add("M")
+           }
+           n1 %= (pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
+           resultDigit = (n1 / pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
+       }
+        while (digitNumber(n1) != 1) {
+            result.add(romanDigits[resultDigit * (pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()] ?: "")
+            n1 %= (pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
+            resultDigit = (n1 / pow(10.0, digitNumber(n1).toDouble() - 1)).toInt()
+        }
+
+    }
+    if (n1 < 10 && n1 != 0)  {
+        result.add(romanDigits[n1] ?: "")
+        return result.joinToString(separator = "")
+    }
     return result.joinToString(separator = "")
 }
-    if (n < 100) {
-        result.add(romanDigits[(n / 10) * 10] ?: "")
-        val n1 = n % 10
-        if (n1 != 0) {
-            result.add(romanDigits[n1] ?: "")
-        }
-        return result.joinToString(separator = "")
-    }
-    if (n < 1000) {
-        result.add(romanDigits[(n / 100) * 100] ?: "")
-        val n1 = ((n % 100) / 10) * 10
-        if (n1 != 0) {
-            result.add(romanDigits[n1] ?: "")
-        }
-        val n2 = n % 10
-        if (n2 != 0) {
-            result.add(romanDigits[n2] ?: "")
-        }
-        return result.joinToString(separator = "")
-    }
-    else {
-        result.add(romanDigits[(n / 1000) * 1000] ?: "")
-        val n1 = ((n % 1000) / 100) * 100
-        if (n1 != 0) {
-            result.add(romanDigits[n1] ?: "")
-        } else return result.joinToString(separator = "")
-        val n2 = ((n % 100) / 10) * 10
-        if (n2 != 0) {
-            result.add(romanDigits[n2] ?: "")
-        } else return result.joinToString(separator = "")
-        val n3 = n % 10
-        if (n3 != 0) {
-            result.add(romanDigits[n3] ?: "")
-        } else return result.joinToString(separator = "")
-        return result.joinToString(separator = "")
-    }
-}
-
 /**
  * Очень сложная
  *
