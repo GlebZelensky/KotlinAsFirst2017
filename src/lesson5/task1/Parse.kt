@@ -1,5 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
+
+import com.sun.xml.internal.messaging.saaj.packaging.mime.util.OutputUtil.writeln
 
 /**
  * Пример
@@ -48,12 +51,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -66,7 +67,31 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val months = mapOf("января" to "01", "февраля" to "02", "марта" to "03",
+            "апреля" to "04", "мая" to "05", "июня" to "06", "июля" to "07",
+            "августа" to "08", "сентября" to "09", "октября" to "10", "ноября" to "11", "декабрь" to "12")
+    val data = mutableListOf<String>()
+    val parts = str.split(" ")
+    var number: Int
+    try {
+        str.toInt()
+        return ""
+    }
+    catch (e: NumberFormatException) {
+    for (part in parts) {
+        try {
+        number = part.toInt()
+        if (number in 0..9) data.add("0$number") else data.add("$number")
+        }
+        catch (e: NumberFormatException) {
+            data.add(months[part] ?: "error")
+            if (data[1] == "error") return ""
+        }
+    }
+    return data.joinToString(separator = ".")
+    }
+}
 
 /**
  * Средняя
