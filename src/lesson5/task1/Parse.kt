@@ -79,6 +79,7 @@ fun dateStrToDigit(str: String): String {
         return ""
     }
     catch (e: NumberFormatException) {
+        if (str.length < 6) return ""
     for (part in parts) {
         try {
         number = part.toInt()
