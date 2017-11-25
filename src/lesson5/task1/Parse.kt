@@ -74,30 +74,26 @@ fun dateStrToDigit(str: String): String {
     val data = mutableListOf<String>()
     val parts = str.split(" ")
     var number: Int
-    try {
-        str.toInt()
-        return ""
-    }
-    catch (e: NumberFormatException) {
-        if (str.length < 6) return ""
-    for (part in parts) {
-        try {
-        number = part.toInt()
-        if (number in 1..9) data.add("0$number") else data.add("$number")
-            if (data.size == 3) {
-                if (data[0].toInt() < 9) {
-                    data.removeAt(2)
-                    data.add("$number") }
+    if ("." in str && str.length > 6) {
+        for (part in parts) {
+            try {
+                number = part.toInt()
+                if (number in 1..9) data.add("0$number") else data.add("$number")
+                if (data.size == 3) {
+                    if (data[0].toInt() < 9) {
+                        data.removeAt(2)
+                        data.add("$number")
+                    }
+                }
+            } catch (e: NumberFormatException) {
+                data.add(months[part] ?: "error")
+                if (data[1] == "error") return ""
             }
         }
-        catch (e: NumberFormatException) {
-            data.add(months[part] ?: "error")
-            if (data[1] == "error") return ""
-        }
-    }
+    } else return ""
     return data.joinToString(separator = ".")
-    }
 }
+
 
 /**
  * Средняя
