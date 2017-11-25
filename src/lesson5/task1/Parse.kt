@@ -68,32 +68,18 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val months = mapOf("января" to "01", "февраля" to "02", "марта" to "03",
-            "апреля" to "04", "мая" to "05", "июня" to "06", "июля" to "07",
-            "августа" to "08", "сентября" to "09", "октября" to "10", "ноября" to "11", "декабрь" to "12")
-    val data = mutableListOf<String>()
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабрь")
+    val month: Int
     val parts = str.split(" ")
-    var number: Int
-    try {
-        str.toInt()
-        return ""
-    } catch (e: NumberFormatException) {
-        for (part in parts) {
-            try {
-                number = part.toInt()
-                if (number in 1..9) data.add("0$number") else data.add("$number")
-                if (data.size == 3) {
-                    if (data[0].toInt() < 9) {
-                        data.removeAt(2)
-                        data.add("$number")
-                    }
-                }
-            } catch (e: NumberFormatException) {
-                data.add(months[part] ?: "error")
-                if (data[1] == "error") return ""
-            }
-        }
-        return data.joinToString(separator = ".")
+    if (parts.size != 3) return ""
+    if (parts[1] in months) {
+        month = months.indexOf(parts[1]) + 1
+    } else  return ""
+    return try {
+        String.format("%02d.%02d.%d", parts[0].toInt(), month, parts[2].toInt())
+} catch (e: NumberFormatException) {
+        ""
     }
 }
 
