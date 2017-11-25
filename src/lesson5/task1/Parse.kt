@@ -74,7 +74,10 @@ fun dateStrToDigit(str: String): String {
     val data = mutableListOf<String>()
     val parts = str.split(" ")
     var number: Int
-    if ("." in str && str.length > 6) {
+    try {
+        str.toInt()
+        return ""
+    } catch (e: NumberFormatException) {
         for (part in parts) {
             try {
                 number = part.toInt()
@@ -90,10 +93,9 @@ fun dateStrToDigit(str: String): String {
                 if (data[1] == "error") return ""
             }
         }
-    } else return ""
-    return data.joinToString(separator = ".")
+        return data.joinToString(separator = ".")
+    }
 }
-
 
 /**
  * Средняя
