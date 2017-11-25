@@ -83,6 +83,11 @@ fun dateStrToDigit(str: String): String {
         try {
         number = part.toInt()
         if (number in 1..9) data.add("0$number") else data.add("$number")
+            if (data.size == 3) {
+                if (data[0].toInt() < 9) {
+                    data.removeAt(2)
+                    data.add("$number") }
+            }
         }
         catch (e: NumberFormatException) {
             data.add(months[part] ?: "error")
