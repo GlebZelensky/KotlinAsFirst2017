@@ -314,7 +314,36 @@ fun decimalFromString(str: String, base: Int): Int  {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String  {
+    val romanUnits = listOf("I","II","III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val romanDozens = listOf("X","XX","XXX","XL","L","LX","LXX","LXXX","XC")
+    val romanHundreds = listOf("C","CC","CCC","CD","D","DC","DCC","DCCC","CM")
+    val result = mutableListOf<String>()
+    if (n < 1000) return romanHundreds(n,romanDozens,romanHundreds,romanUnits)
+    else for (i in 1..(n / 1000)) {
+            result.add("M")
+        }
+    return if (romanHundreds(n % 1000,romanDozens,romanHundreds,romanUnits).isEmpty()) result.joinToString(separator = "")
+    else result.joinToString(separator = "") + romanHundreds(n % 1000,romanDozens,romanHundreds,romanUnits)
+}
+
+    fun romanHundreds(n: Int, romanDozens: List<String>, romanHundreds: List<String>,
+                      romanUnits: List<String>): String {
+        val listOfResults = mutableListOf<String>()
+        var n1 = n
+        if (n >= 100) {
+            listOfResults.add(romanHundreds[n / 100 - 1])
+            n1 %= 100
+        }
+        if (n1 >= 10) {
+            listOfResults.add(romanDozens[n1 / 10 - 1])
+            n1 %= 10
+        }
+        if (n1 > 0) {
+            listOfResults.add(romanUnits[n1 - 1])
+        }
+        return listOfResults.joinToString(separator = "")
+}
 /**
  * Очень сложная
  *
