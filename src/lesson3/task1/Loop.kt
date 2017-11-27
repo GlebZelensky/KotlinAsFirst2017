@@ -129,7 +129,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in n / 2 downTo 2)
+    for (i in n / 2 downTo Math.sqrt(n.toDouble()).toInt())
         if (n % i == 0) return i
     return 1
 }
@@ -186,7 +186,7 @@ fun sin(x: Double, eps: Double): Double {
     val pow = 1.0
     val minus = 1
     val result = 0.0
-   return decisionSinCos(x, eps, pow, minus, result)
+    return decisionSinCos(x, eps, pow, minus, result)
 }
 
 
@@ -203,6 +203,7 @@ fun cos(x: Double, eps: Double): Double {
     val result = 1.0
     return decisionSinCos(x, eps, pow, minus, result)
 }
+
 /**
  * Средняя
  *
@@ -275,6 +276,7 @@ fun digNumber(digNumber: Int, result: Int, n: Int): Int {
     }
     return result1 % 10
 }
+
 fun squareSequenceDigit(n: Int): Int {
     var digits = 0
     var result = 1
