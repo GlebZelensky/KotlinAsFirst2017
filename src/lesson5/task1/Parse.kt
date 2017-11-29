@@ -75,7 +75,7 @@ fun dateStrToDigit(str: String): String {
     if (parts.size != 3) return ""
     if (parts[1] in months) {
         month = months.indexOf(parts[1]) + 1
-    } else  return ""
+    } else return ""
     return try {
         String.format("%02d.%02d.%d", parts[0].toInt(), month, parts[2].toInt())
     } catch (e: NumberFormatException) {
@@ -91,21 +91,22 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val months = mapOf("01" to "января","02" to "февраля","03" to "марта","04" to "апреля","05" to "мая",
-            "06" to "июня","07" to "июля", "08" to "августа","09" to "сентября",
-            "10" to "октября","11" to "ноября","12" to "декабрь")
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабрь")
     val parts = digital.split(".")
     val month: String
     if (parts.size != 3) return ""
-    if (parts[1] in months) {
-        month = (months[parts[1]] ?: "")
-    } else return ""
-    return try {
-        String.format("%d %s %d", parts[0].toInt(), month, parts[2].toInt())
+    try {
+        val secondPart = parts[1].toInt()
+        if (secondPart in 1..12) {
+            month = months[secondPart - 1]
+        } else return ""
+        return String.format("%d %s %d", parts[0].toInt(), month, parts[2].toInt())
     } catch (e: NumberFormatException) {
-    ""
+        return ""
+    }
 }
-}
+
 
 /**
  * Средняя
