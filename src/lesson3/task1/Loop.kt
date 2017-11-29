@@ -129,7 +129,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in n / 2 downTo Math.sqrt(n.toDouble()).toInt())
+    for (i in n / 2 downTo minDivisor(n))
         if (n % i == 0) return i
     return 1
 }
@@ -266,27 +266,26 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun digNumber(digNumber: Int, result: Int, n: Int): Int {
-    var result1 = result
-    var digNumber1 = digNumber
-    if (digNumber1 == n) return result1 % 10
-    else while (digNumber1 > n) {
-        result1 /= 10
-        digNumber1 -= 1
+fun digNumber(digNumber: Int, n: Int): Int {
+    var result = 1
+    var digNum = 0
+    if (digNum == n) return result % 10
+    else while (digNum > n) {
+        result /= 10
+        digNum -= 1
     }
-    return result1 % 10
+    return result % 10
 }
-
 fun squareSequenceDigit(n: Int): Int {
     var digits = 0
-    var result = 1
+    var result: Int
     var digNumber = 0
     while (digNumber < n) {
         digits += 1
         result = digits * digits
         digNumber += digitNumber(result)
     }
-    return digNumber(digNumber, result, n)
+    return digNumber(digNumber, n)
 }
 
 /**
@@ -298,12 +297,12 @@ fun squareSequenceDigit(n: Int): Int {
  */
 fun fibSequenceDigit(n: Int): Int {
     var digits = 0
-    var result = 1
+    var result: Int
     var digNumber = 0
     while (digNumber < n) {
         digits += 1
         result = lesson3.task1.fib(digits)
         digNumber += digitNumber(result)
     }
-    return digNumber(digNumber, result, n)
+    return digNumber(digNumber, n)
 }

@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson4.task1
 
 import lesson1.task1.discriminant
@@ -115,11 +116,11 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * Модуль пустого вектора считать равным 0.0.
  */
 fun abs(v: List<Double>): Double {
-    val result = mutableListOf<Double>()
+    var result = 0.0
     for (element in v) {
-        result.add(sqr(element))
+        result += sqr(element)
     }
-    return sqrt(result.sum())
+    return sqrt(result)
 }
 
 
@@ -140,12 +141,11 @@ fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else list.sum() /
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()) return list
     val mid = mean(list)
-    for ( i in 0 until list.size) {
+    for (i in 0 until list.size) {
         list[i] -= mid
     }
-return list
+    return list
 }
 
 /**
@@ -156,13 +156,13 @@ return list
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double {
-    if (a.isEmpty() && b.isEmpty()) return 0.0
-    val ci = mutableListOf<Double>()
-    for ( i in 0 until a.size) {
-       ci.add(a[i] * b[i])
+    var ci = 0.0
+    for (i in 0 until a.size) {
+        ci += a[i] * b[i]
     }
-    return ci.sum()
+    return ci
 }
+
 /**
  * Средняя
  *
@@ -172,11 +172,13 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    val polyList = mutableListOf<Double>()
+    var poly = 0.0
+    var powX = 0.0
     for (i in 0 until p.size) {
-        polyList.add(p[i] * pow(x, i.toDouble()))
+        poly += (p[i] * pow(x, powX))
+        powX += 1.0
     }
-    return polyList.sum()
+    return poly
 }
 
 /**
@@ -190,7 +192,6 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()) return list
     for (i in 1 until list.size) {
         list[i] = list[i - 1] + list[i]
     }
@@ -208,8 +209,9 @@ fun factorize(n: Int): List<Int> {
     val g = mutableListOf<Int>()
     var n1 = n
     while (n1 > 1) {
-       g.add(minDivisor(n1))
-       n1 /= minDivisor(n1)
+        val div = minDivisor(n1)
+        g.add(div)
+        n1 /= div
     }
     return g
 }
@@ -233,12 +235,9 @@ fun convert(n: Int, base: Int): List<Int> {
     val p = mutableListOf<Int>()
     val result = mutableListOf<Int>()
     var n1 = n
-    if (n == 0)  {
-        result.add(0)
-        return result
-    }
+    if (n == 0) return listOf(0)
     while (n1 > 0) {
-       p.add(n1 % base)
+        p.add(n1 % base)
         n1 /= base
     }
     for (i in p.size - 1 downTo 0) {
@@ -256,8 +255,8 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val abc = listOf("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
-            "p","q","r","s","t","u","v","w","x","y","z")
+    val abc = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+            "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
     val list = mutableListOf<Int>()
     for (i in 0 until convert(n, base).size) {
         list.add(convert(n, base)[i])
@@ -268,8 +267,9 @@ fun convertToString(n: Int, base: Int): String {
             listPart2.add(abc[list[i] - 10])
         } else listPart2.add(list[i].toString())
     }
- return listPart2.joinToString(separator = "")
+    return listPart2.joinToString(separator = "")
 }
+
 /**
  * Средняя
  *
@@ -296,7 +296,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int  {
+fun decimalFromString(str: String, base: Int): Int {
     val abcChars = ("abcdefghijklmnopqrstuvwxyz")
     val listOfChars = mutableListOf<Int>()
     for (i in 0 until str.length) {
@@ -314,36 +314,36 @@ fun decimalFromString(str: String, base: Int): Int  {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String  {
-    val romanUnits = listOf("I","II","III", "IV", "V", "VI", "VII", "VIII", "IX")
-    val romanDozens = listOf("X","XX","XXX","XL","L","LX","LXX","LXXX","XC")
-    val romanHundreds = listOf("C","CC","CCC","CD","D","DC","DCC","DCCC","CM")
+fun roman(n: Int): String {
     val result = mutableListOf<String>()
-    if (n < 1000) return romanHundreds(n,romanDozens,romanHundreds,romanUnits)
+    if (n < 1000) return romanHundreds(n)
     else for (i in 1..(n / 1000)) {
-            result.add("M")
-        }
-    return if (romanHundreds(n % 1000,romanDozens,romanHundreds,romanUnits).isEmpty()) result.joinToString(separator = "")
-    else result.joinToString(separator = "") + romanHundreds(n % 1000,romanDozens,romanHundreds,romanUnits)
+        result.add("M")
+    }
+    return if (romanHundreds(n % 1000).isEmpty()) result.joinToString(separator = "")
+    else result.joinToString(separator = "") + romanHundreds(n % 1000)
 }
 
-    fun romanHundreds(n: Int, romanDozens: List<String>, romanHundreds: List<String>,
-                      romanUnits: List<String>): String {
-        val listOfResults = mutableListOf<String>()
-        var n1 = n
-        if (n >= 100) {
-            listOfResults.add(romanHundreds[n / 100 - 1])
-            n1 %= 100
-        }
-        if (n1 >= 10) {
-            listOfResults.add(romanDozens[n1 / 10 - 1])
-            n1 %= 10
-        }
-        if (n1 > 0) {
-            listOfResults.add(romanUnits[n1 - 1])
-        }
-        return listOfResults.joinToString(separator = "")
+fun romanHundreds(n: Int): String {
+    val romanUnits = listOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val romanDozens = listOf("X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+    val romanHundreds = listOf("C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
+    val listOfResults = mutableListOf<String>()
+    var n1 = n
+    if (n >= 100) {
+        listOfResults.add(romanHundreds[n / 100 - 1])
+        n1 %= 100
+    }
+    if (n1 >= 10) {
+        listOfResults.add(romanDozens[n1 / 10 - 1])
+        n1 %= 10
+    }
+    if (n1 > 0) {
+        listOfResults.add(romanUnits[n1 - 1])
+    }
+    return listOfResults.joinToString(separator = "")
 }
+
 /**
  * Очень сложная
  *
@@ -352,16 +352,16 @@ fun roman(n: Int): String  {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val dozens = listOf("десять","двадцать","тридцать","сорок","пятьдесят",
-            "шестьдесят","семьдесят","восемьдесят","девяносто")
-    val decade = listOf("десять","одиннадцать","двенадцать","тринадцать","четырнадцать",
-            "пятнадцать","шестнадцать","семнадцать","восемнадцать","девятнадцать")
-    val hundreds = listOf("сто","двести","триста","четыреста","пятьсот","шестьсот","семьсот","восемьсот","девятьсот")
-    if (n < 1000) return forHundreds(n,dozens,decade,hundreds)
+    if (n < 1000) return forHundreds(n)
     else {
         val result = mutableListOf<String>()
-        val thousands = listOf("тысяч","одна тысяча","две тысячи","три тысячи","четыре тысячи",
-                "пять тысяч","шесть тысяч","семь тысяч","восемь тысяч","девять тысяч")
+        val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят",
+                "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+        val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+                "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+        val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+        val thousands = listOf("тысяч", "одна тысяча", "две тысячи", "три тысячи", "четыре тысячи",
+                "пять тысяч", "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
         if (n >= 100000) {
             result.add(hundreds[(n / 100000) - 1])
         }
@@ -369,22 +369,27 @@ fun russian(n: Int): String {
         if (n1 >= 10000) {
             if (n1 in 10000..19999) {
                 result.add(decade[((n1 / 1000) % 10)])
-                return if (forHundreds(n % 1000,dozens,decade,hundreds).isEmpty())
-                    result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000,dozens,decade,hundreds)
-                else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000,dozens,decade,hundreds)
-            }
-            else result.add(dozens[(n1 / 10000) - 1])
+                return if (forHundreds(n % 1000).isEmpty())
+                    result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000)
+                else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000)
+            } else result.add(dozens[(n1 / 10000) - 1])
         }
         if (n1 >= 1000) {
             result.add(thousands[n % 10000 / 1000])
-        } else return if (forHundreds(n % 1000,dozens,decade,hundreds).isEmpty())
-            result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000,dozens,decade,hundreds)
-        else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000,dozens,decade,hundreds)
-        return result.joinToString(separator = " ") + " " + forHundreds(n % 1000,dozens,decade,hundreds)
+        } else return if (forHundreds(n % 1000).isEmpty())
+            result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000)
+        else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000)
+        return result.joinToString(separator = " ") + " " + forHundreds(n % 1000)
     }
-    }
-fun forHundreds(n: Int, dozens: List<String>, decade: List<String>, hundreds: List<String>): String {
-    val units = listOf("один","два","три","четыре","пять","шесть","семь","восемь","девять")
+}
+
+fun forHundreds(n: Int): String {
+    val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят",
+            "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+    val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     val result = mutableListOf<String>()
     var n1 = n
     if (n >= 100) {
