@@ -120,7 +120,24 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val mainCharacters = "+0123456789"
+    val characterFilter = mutableListOf<String>()
+    val moreCharacters = "+()- "
+    try {
+        for (i in 0 until phone.length) {
+            if (phone[i] !in moreCharacters) {
+                phone[i].toString().toInt()
+            }
+            if (phone[i] in mainCharacters) {
+                characterFilter.add(phone[i].toString())
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return characterFilter.joinToString(separator = "")
+}
 
 /**
  * Средняя
