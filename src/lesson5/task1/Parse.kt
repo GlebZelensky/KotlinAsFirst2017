@@ -70,13 +70,12 @@ fun main(args: Array<String>) {
 fun dateStrToDigit(str: String): String {
     val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября", "ноября", "декабрь")
-    val parts = str.split(" ")
     val month: Int
-    when {
-        parts.size != 3 -> return ""
-        parts[1] in months -> month = months.indexOf(parts[1]) + 1
-        else -> return ""
-    }
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+    if (parts[1] in months) {
+        month = months.indexOf(parts[1]) + 1
+    } else  return ""
     return try {
         String.format("%02d.%02d.%d", parts[0].toInt(), month, parts[2].toInt())
     } catch (e: NumberFormatException) {
