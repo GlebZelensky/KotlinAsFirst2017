@@ -170,12 +170,12 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    val onlyNumbers = jumps.filter { it != '-' && it != '%' && it != '+' }.split(' ')
+    val onlyNumbers = jumps.filter { it != '-' && it != '%' }.split(' ')
     val bestJumps = mutableListOf<Int>()
     try {
-        for (part in onlyNumbers) {
-            if (part + " " + "+" in jumps && part != "") {
-                bestJumps.add(part.toInt())
+        for (i in 1 until onlyNumbers.size) {
+            if (onlyNumbers[i] == "+") {
+                bestJumps.add(onlyNumbers[i - 1].toInt())
             }
         }
     } catch (e: NumberFormatException) {
