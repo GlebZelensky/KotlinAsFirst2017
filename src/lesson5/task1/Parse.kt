@@ -121,22 +121,19 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    val mainCharacters = "+0123456789"
-    val characterFilter = mutableListOf<String>()
-    val moreCharacters = "+()- "
+    val number = mutableListOf<String>()
+    val charactersFilter = phone.filter { it != ' ' && it != '-' && it != '(' && it != ')' }
     try {
-        for (i in 0 until phone.length) {
-            if (phone[i] !in moreCharacters) {
-                phone[i].toString().toInt()
+        for (i in 0 until charactersFilter.length) {
+            if (charactersFilter[i] != '+') {
+                charactersFilter[i].toString().toInt()
             }
-            if (phone[i] in mainCharacters) {
-                characterFilter.add(phone[i].toString())
-            }
+            number.add(charactersFilter[i].toString())
         }
     } catch (e: NumberFormatException) {
         return ""
     }
-    return characterFilter.joinToString(separator = "")
+    return number.joinToString(separator = "")
 }
 
 /**
@@ -149,7 +146,18 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val resultList = mutableListOf<Int>()
+    val digitsParts = jumps.filter { it != '-' && it != '%' }.split(' ')
+    for (part in digitsParts) {
+        try {
+            if (part != "") resultList.add(part.toInt())
+        } catch (e: NumberFormatException) {
+            return -1
+        }
+    }
+    return resultList.max() ?: -1
+}
 
 /**
  * Сложная
@@ -161,7 +169,20 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val onlyNumbers = jumps.filter { it != '-' && it != '%' && it != '+' }.split(' ')
+    val bestJumps = mutableListOf<Int>()
+    try {
+        for (part in onlyNumbers) {
+            if (part + " " + "+" in jumps && part != "") {
+                bestJumps.add(part.toInt())
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+    return bestJumps.max() ?: -1
+}
 
 /**
  * Сложная

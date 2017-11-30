@@ -317,7 +317,7 @@ fun decimalFromString(str: String, base: Int): Int {
 fun roman(n: Int): String {
     val result = mutableListOf<String>()
     if (n < 1000) return romanHundreds(n)
-    else for (i in 1..(n / 1000)) {
+    else for (i in 1..n / 1000) {
         result.add("M")
     }
     return if (romanHundreds(n % 1000).isEmpty()) result.joinToString(separator = "")
@@ -360,26 +360,27 @@ fun russian(n: Int): String {
         val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
                 "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
         val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-        val thousands = listOf("тысяч", "одна тысяча", "две тысячи", "три тысячи", "четыре тысячи",
+        val thousands = listOf("одна тысяча", "две тысячи", "три тысячи", "четыре тысячи",
                 "пять тысяч", "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
-        if (n >= 100000) {
-            result.add(hundreds[(n / 100000) - 1])
-        }
         val n1 = n % 100000
+        val n2 = n % 1000
+        if (n >= 100000) {
+            result.add(hundreds[n / 100000 - 1])
+        }
         if (n1 >= 10000) {
             if (n1 in 10000..19999) {
-                result.add(decade[((n1 / 1000) % 10)])
-                return if (forHundreds(n % 1000).isEmpty())
-                    result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000)
-                else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000)
-            } else result.add(dozens[(n1 / 10000) - 1])
+                result.add(decade[(n1 / 1000 % 10)])
+                return if (forHundreds(n2).isEmpty())
+                    result.joinToString(separator = " ") + " тысяч"
+                else result.joinToString(separator = " ") + " тысяч " + forHundreds(n2)
+            } else result.add(dozens[n1 / 10000 - 1])
         }
         if (n1 >= 1000) {
-            result.add(thousands[n % 10000 / 1000])
+            result.add(thousands[n % 10000 / 1000 - 1])
         } else return if (forHundreds(n % 1000).isEmpty())
-            result.joinToString(separator = " ") + " тысяч" + forHundreds(n % 1000)
-        else result.joinToString(separator = " ") + " тысяч " + forHundreds(n % 1000)
-        return result.joinToString(separator = " ") + " " + forHundreds(n % 1000)
+            result.joinToString(separator = " ") + " тысяч"
+        else result.joinToString(separator = " ") + " тысяч " + forHundreds(n2)
+        return result.joinToString(separator = " ") + " " + forHundreds(n2)
     }
 }
 
@@ -393,7 +394,7 @@ fun forHundreds(n: Int): String {
     val result = mutableListOf<String>()
     var n1 = n
     if (n >= 100) {
-        result.add(hundreds[(n / 100) - 1])
+        result.add(hundreds[n / 100 - 1])
         n1 = n % 100
     }
     if (n1 >= 10) {
@@ -401,7 +402,7 @@ fun forHundreds(n: Int): String {
             result.add(decade[(n1 % 10)])
             return result.joinToString(separator = " ")
         }
-        result.add(dozens[(n1 / 10) - 1])
+        result.add(dozens[n1 / 10 - 1])
         n1 = n % 10
     }
     if (n1 > 0) {
