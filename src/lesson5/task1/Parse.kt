@@ -170,12 +170,12 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    val onlyNumbers = jumps.filter { it != '-' && it != '%' }.split(' ')
+    val resultWithPlus = jumps.filter { it != '-' && it != '%' }.split(' ')
     val bestJumps = mutableListOf<Int>()
     try {
-        for (i in 1 until onlyNumbers.size) {
-            if (onlyNumbers[i] == "+") {
-                bestJumps.add(onlyNumbers[i - 1].toInt())
+        for (i in 1 until resultWithPlus.size) {
+            if (resultWithPlus[i] == "+") {
+                bestJumps.add(resultWithPlus[i - 1].toInt())
             }
         }
     } catch (e: NumberFormatException) {
@@ -193,7 +193,27 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val numbers = expression.split(' ')
+    var result = 0
+    var meter = 1
+    if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
+    else throw IllegalArgumentException()
+        for (i in 0 until numbers.size - 1) {
+            if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
+            if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
+            if (numbers[i] == "+") {
+                result += numbers[i + 1].toInt()
+                meter = 1
+            }
+            if (numbers[i] == "-") {
+                result -= numbers[i + 1].toInt()
+                meter = 1
+            }
+        }
+    return result
+}
+
 
 /**
  * Сложная
