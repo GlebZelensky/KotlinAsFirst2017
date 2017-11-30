@@ -360,7 +360,7 @@ fun russian(n: Int): String {
         val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
                 "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
         val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-        val thousands = listOf("одна тысяча", "две тысячи", "три тысячи", "четыре тысячи",
+        val thousands = listOf("тысяч","одна тысяча", "две тысячи", "три тысячи", "четыре тысячи",
                 "пять тысяч", "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
         val n1 = n % 100000
         val n2 = n % 1000
@@ -371,14 +371,14 @@ fun russian(n: Int): String {
             if (n1 in 10000..19999) {
                 result.add(decade[(n1 / 1000 % 10)])
                 return if (forHundreds(n2).isEmpty())
-                    result.joinToString(separator = " ") + " тысяч"
+                    result.joinToString(separator = " ") + " " + thousands[0]
                 else result.joinToString(separator = " ") + " тысяч " + forHundreds(n2)
             } else result.add(dozens[n1 / 10000 - 1])
         }
         if (n1 >= 1000) {
-            result.add(thousands[n % 10000 / 1000 - 1])
-        } else return if (forHundreds(n % 1000).isEmpty())
-            result.joinToString(separator = " ") + " тысяч"
+            result.add(thousands[n % 10000 / 1000])
+        } else return if (forHundreds(n2).isEmpty())
+            result.joinToString(separator = " ") + " " + thousands[0]
         else result.joinToString(separator = " ") + " тысяч " + forHundreds(n2)
         return result.joinToString(separator = " ") + " " + forHundreds(n2)
     }
