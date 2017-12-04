@@ -173,10 +173,10 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var poly = 0.0
-    var powX = 0.0
+    var powX = 1.0
     for (i in 0 until p.size) {
-        poly += (p[i] * pow(x, powX))
-        powX += 1.0
+        poly += p[i] * powX
+        powX *= x
     }
     return poly
 }
@@ -193,7 +193,7 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     for (i in 1 until list.size) {
-        list[i] = list[i - 1] + list[i]
+        list[i] += list[i - 1]
     }
     return list
 }
@@ -206,14 +206,14 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val g = mutableListOf<Int>()
+    val resultList = mutableListOf<Int>()
     var n1 = n
     while (n1 > 1) {
         val div = minDivisor(n1)
-        g.add(div)
+        resultList.add(div)
         n1 /= div
     }
-    return g
+    return resultList
 }
 
 /**
@@ -233,17 +233,13 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  */
 fun convert(n: Int, base: Int): List<Int> {
     val p = mutableListOf<Int>()
-    val result = mutableListOf<Int>()
     var n1 = n
     if (n == 0) return listOf(0)
     while (n1 > 0) {
         p.add(n1 % base)
         n1 /= base
     }
-    for (i in p.size - 1 downTo 0) {
-        result.add(p[i])
-    }
-    return result
+    return p.reversed()
 }
 
 /**
@@ -255,19 +251,16 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val abc = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
-            "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-    val list = mutableListOf<Int>()
-    for (i in 0 until convert(n, base).size) {
-        list.add(convert(n, base)[i])
+    val listOfChars = StringBuilder()
+    val convert = convert(n, base)
+    for (i in 0 until convert.size) {
+        if (convert[i] > 9) {
+            listOfChars.append('a' + convert[i] - 10)
+        } else {
+            listOfChars.append(convert[i])
+        }
     }
-    val listPart2 = mutableListOf<String>()
-    for (i in 0 until list.size) {
-        if (list[i] > 9) {
-            listPart2.add(abc[list[i] - 10])
-        } else listPart2.add(list[i].toString())
-    }
-    return listPart2.joinToString(separator = "")
+    return listOfChars.toString()
 }
 
 /**
@@ -278,13 +271,15 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    val resultList = mutableListOf<Int>()
-    var p = 0
-    for (i in digits.size - 1 downTo 0) {
-        resultList.add(digits[p] * pow(base.toDouble(), i.toDouble()).toInt())
-        p += 1
+    var result = 0
+    var powBase = 1
+    var p = digits.size - 1
+    for (i in 0 until digits.size) {
+        result += digits[p] * powBase
+        powBase *= base
+        p--
     }
-    return resultList.sum()
+    return result
 }
 
 /**
@@ -297,13 +292,13 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val abcChars = ("abcdefghijklmnopqrstuvwxyz")
-    val listOfChars = mutableListOf<Int>()
+    val abcChars = "abcdefghijklmnopqrstuvwxyz"
+    val listOfInt = mutableListOf<Int>()
     for (i in 0 until str.length) {
-        if (str[i] in abcChars) listOfChars.add(abcChars.indexOf(str[i], 0) + 10)
-        else listOfChars.add(str[i].toString().toInt())
+        if (str[i] in abcChars) listOfInt.add(abcChars.indexOf(str[i], 0) + 10)
+        else listOfInt.add(str[i].toString().toInt())
     }
-    return decimal(listOfChars.toList(), base)
+    return decimal(listOfInt.toList(), base)
 }
 
 /**
@@ -315,33 +310,33 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val result = mutableListOf<String>()
+    val result = StringBuilder()
     if (n < 1000) return romanHundreds(n)
     else for (i in 1..n / 1000) {
-        result.add("M")
+        result.append("M")
     }
-    return if (romanHundreds(n % 1000).isEmpty()) result.joinToString(separator = "")
-    else result.joinToString(separator = "") + romanHundreds(n % 1000)
+    return result.toString() + romanHundreds(n % 1000)
 }
 
 fun romanHundreds(n: Int): String {
     val romanUnits = listOf("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
     val romanDozens = listOf("X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
     val romanHundreds = listOf("C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
-    val listOfResults = mutableListOf<String>()
+    val listOfResults = StringBuilder()
     var n1 = n
     if (n >= 100) {
-        listOfResults.add(romanHundreds[n / 100 - 1])
+        listOfResults.append(romanHundreds[n / 100 - 1])
         n1 %= 100
     }
     if (n1 >= 10) {
-        listOfResults.add(romanDozens[n1 / 10 - 1])
+        listOfResults.append(romanDozens[n1 / 10 - 1])
         n1 %= 10
     }
     if (n1 > 0) {
-        listOfResults.add(romanUnits[n1 - 1])
+        listOfResults.append(romanUnits[n1 - 1])
     }
-    return listOfResults.joinToString(separator = "")
+    return if (listOfResults.isEmpty()) return ""
+    else listOfResults.toString()
 }
 
 /**
@@ -352,61 +347,60 @@ fun romanHundreds(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    if (n < 1000) return forHundreds(n)
+    if (n < 1000) return forHundreds(n).trim()
     else {
-        val result = mutableListOf<String>()
-        val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят",
-                "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-        val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
-                "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-        val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-        val thousands = listOf("тысяч","одна тысяча", "две тысячи", "три тысячи", "четыре тысячи",
-                "пять тысяч", "шесть тысяч", "семь тысяч", "восемь тысяч", "девять тысяч")
-        val n1 = n % 100000
-        val n2 = n % 1000
+        val resultList = mutableListOf<String>()
+        val thousands = listOf("одна", "две", "три", "четыре",
+                "пять", "шесть", "семь", "восемь", "девять")
+        val tester = n % 100000
+        val hundreds = forHundreds(n % 1000)
         if (n >= 100000) {
-            result.add(hundreds[n / 100000 - 1])
+            resultList.add(lesson4.task1.hundreds[n / 100000 - 1])
         }
-        if (n1 >= 10000) {
-            if (n1 in 10000..19999) {
-                result.add(decade[(n1 / 1000 % 10)])
-                return if (forHundreds(n2).isEmpty())
-                    result.joinToString(separator = " ") + " " + thousands[0]
-                else result.joinToString(separator = " ") + " тысяч " + forHundreds(n2)
-            } else result.add(dozens[n1 / 10000 - 1])
+        if (tester >= 10000) {
+            if (tester in 10000..19999) {
+                resultList.add(decade[(tester / 1000 % 10)])
+                return resultList.joinToString(separator = " ") + " тысяч" + hundreds
+            } else resultList.add(dozens[tester / 10000 - 1])
         }
-        if (n1 >= 1000) {
-            result.add(thousands[n % 10000 / 1000])
-        } else return if (forHundreds(n2).isEmpty())
-            result.joinToString(separator = " ") + " " + thousands[0]
-        else result.joinToString(separator = " ") + " тысяч " + forHundreds(n2)
-        return result.joinToString(separator = " ") + " " + forHundreds(n2)
+        if (tester >= 1000) {
+            val howManyThousands = n % 10000 / 1000
+            when (howManyThousands) {
+                0 -> resultList.add("тысяч")
+                1 -> resultList.add("одна тысяча")
+                in 2..4 -> resultList.add(thousands[howManyThousands - 1] + " тысячи")
+                in 5..9 -> resultList.add(thousands[howManyThousands - 1] + " тысяч")
+            }
+        } else return resultList.joinToString(separator = " ") + " тысяч" + hundreds
+        return resultList.joinToString(separator = " ") + hundreds
     }
 }
 
+val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят",
+        "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+        "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+
 fun forHundreds(n: Int): String {
-    val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят",
-            "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-    val decade = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
-            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
     val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     val result = mutableListOf<String>()
-    var n1 = n
+    var changer = n
     if (n >= 100) {
         result.add(hundreds[n / 100 - 1])
-        n1 = n % 100
+        changer = n % 100
     }
-    if (n1 >= 10) {
-        if (n1 in 10..19) {
-            result.add(decade[(n1 % 10)])
+    if (changer >= 10) {
+        if (changer in 10..19) {
+            result.add(decade[(changer % 10)])
             return result.joinToString(separator = " ")
         }
-        result.add(dozens[n1 / 10 - 1])
-        n1 = n % 10
+        result.add(dozens[changer / 10 - 1])
+        changer = n % 10
     }
-    if (n1 > 0) {
-        result.add(units[n1 - 1])
+    if (changer > 0) {
+        result.add(units[changer - 1])
     }
-    return result.joinToString(separator = " ")
+    return if (result.isNotEmpty()) " " + result.joinToString(separator = " ")
+    else return ""
 }

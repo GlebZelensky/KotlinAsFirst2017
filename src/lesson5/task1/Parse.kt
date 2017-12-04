@@ -70,11 +70,10 @@ fun main(args: Array<String>) {
 fun dateStrToDigit(str: String): String {
     val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября", "ноября", "декабря")
-    val month: Int
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    if (parts[1] in months) {
-        month = months.indexOf(parts[1]) + 1
+    val month = if (parts[1] in months) {
+        months.indexOf(parts[1]) + 1
     } else return ""
     return try {
         String.format("%02d.%02d.%d", parts[0].toInt(), month, parts[2].toInt())
@@ -94,13 +93,14 @@ fun dateDigitToStr(digital: String): String {
     val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября", "ноября", "декабря")
     val parts = digital.split(".")
-    val month: String
     if (parts.size != 3) return ""
     try {
         val secondPart = parts[1].toInt()
-        if (secondPart in 1..12) {
-            month = months[secondPart - 1]
-        } else return ""
+        val month = if (secondPart in 1..12) {
+            months[secondPart - 1]
+        } else {
+            return ""
+        }
         return String.format("%d %s %d", parts[0].toInt(), month, parts[2].toInt())
     } catch (e: NumberFormatException) {
         return ""
@@ -121,19 +121,19 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    val number = mutableListOf<String>()
-    val charactersFilter = phone.filter { it != ' ' && it != '-' && it != '(' && it != ')' }
+    val number = StringBuilder()
+    val charactersFilter = phone.filter { it !in listOf( ' ','-','(',')') }
     try {
         for (i in 0 until charactersFilter.length) {
             if (charactersFilter[i] != '+') {
                 charactersFilter[i].toString().toInt()
             }
-            number.add(charactersFilter[i].toString())
+            number.append(charactersFilter[i])
         }
     } catch (e: NumberFormatException) {
         return ""
     }
-    return number.joinToString(separator = "")
+    return number.toString()
 }
 
 /**
