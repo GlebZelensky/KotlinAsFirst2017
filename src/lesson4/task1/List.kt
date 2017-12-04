@@ -347,7 +347,9 @@ fun romanHundreds(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    if (n < 1000) return forHundreds(n).trim()
+    if (n < 1000) {
+        return forHundreds(n).trim()
+    }
     else {
         val resultList = mutableListOf<String>()
         val thousands = listOf("одна", "две", "три", "четыре",
@@ -393,7 +395,7 @@ fun forHundreds(n: Int): String {
     if (changer >= 10) {
         if (changer in 10..19) {
             result.add(decade[(changer % 10)])
-            return result.joinToString(separator = " ")
+            return " " + result.joinToString(separator = " ")
         }
         result.add(dozens[changer / 10 - 1])
         changer = n % 10
@@ -401,6 +403,10 @@ fun forHundreds(n: Int): String {
     if (changer > 0) {
         result.add(units[changer - 1])
     }
-    return if (result.isNotEmpty()) " " + result.joinToString(separator = " ")
-    else return ""
+    return if (result.isNotEmpty()) {
+        " " + result.joinToString(separator = " ")
+    }
+    else {
+        return ""
+    }
 }
