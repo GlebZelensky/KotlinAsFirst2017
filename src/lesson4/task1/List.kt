@@ -273,11 +273,9 @@ fun convertToString(n: Int, base: Int): String {
 fun decimal(digits: List<Int>, base: Int): Int {
     var result = 0
     var powBase = 1
-    var p = digits.size - 1
-    for (i in 0 until digits.size) {
-        result += digits[p] * powBase
+    for (i in digits.size - 1 downTo 0) {
+        result += digits[i] * powBase
         powBase *= base
-        p--
     }
     return result
 }
