@@ -124,15 +124,17 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val number = StringBuilder()
+    var tester = 0
     val charactersFilter = phone.filter { it !in (" -()") }
     for (i in 0 until charactersFilter.length) {
         if (charactersFilter[i] != '+') {
-            if (charactersFilter[i].isDigit()) else return ""
+            if (charactersFilter[i].isDigit()) tester++ else return ""
         } else {
             if (charactersFilter[i] != charactersFilter[0]) return ""
         }
         number.append(charactersFilter[i])
     }
+    if (tester == 0) return ""
     return number.toString()
 }
 
