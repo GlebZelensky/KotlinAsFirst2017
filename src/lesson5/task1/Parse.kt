@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.OutputUtil.writeln
+import java.lang.Double.parseDouble
 
 /**
  * Пример
@@ -81,8 +82,10 @@ fun dateStrToDigit(str: String): String {
         ""
     }
 }
+
 val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
         "августа", "сентября", "октября", "ноября", "декабря")
+
 /**
  * Средняя
  *
@@ -122,12 +125,12 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val number = StringBuilder()
     val charactersFilter = phone.filter { it !in (" -()") }
-        for (i in 0 until charactersFilter.length) {
-            if (charactersFilter[i] != '+') {
-               if (charactersFilter[i].isDigit()) else return ""
-            }
-            number.append(charactersFilter[i])
+    for (i in 0 until charactersFilter.length) {
+        if (charactersFilter[i] != '+') {
+            if (charactersFilter[i].isDigit()) else return ""
         }
+        number.append(charactersFilter[i])
+    }
     return number.toString()
 }
 
@@ -143,10 +146,10 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val resultList = mutableListOf<Int>()
-    val digitsParts = jumps.filter { it != '-' && it != '%' }.split(' ')
+    val digitsParts = Regex("""[ ]{1,10}""").split(jumps.filter { it != '-' && it != '%' }.trim())
     for (part in digitsParts) {
         try {
-            if (part != "") resultList.add(part.toInt())
+            resultList.add(part.toInt())
         } catch (e: NumberFormatException) {
             return -1
         }
@@ -192,22 +195,32 @@ fun plusMinus(expression: String): Int {
     val numbers = expression.split(' ')
     var result = 0
     var meter = 1
+    var numeric = true
+    try {
+        parseDouble(expression.filter { it !in "+- " })
+    } catch (e: NumberFormatException) {
+        numeric = false
+    }
+    if (numeric) else throw IllegalArgumentException()
     if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
     else throw IllegalArgumentException()
-        for (i in 0 until numbers.size - 1) {
-            if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
-            if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
-            if (numbers[i] == "+") {
-                result += numbers[i + 1].toInt()
-                meter = 1
-            }
-            if (numbers[i] == "-") {
-                result -= numbers[i + 1].toInt()
-                meter = 1
-            }
+    for (i in 0 until numbers.size - 1) {
+        if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
+        if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
+        if (numbers[i] == "+") {
+            result += numbers[i + 1].toInt()
+            meter = 1
         }
+        if (numbers[i] == "-") {
+            result -= numbers[i + 1].toInt()
+            meter = 1
+        }
+    }
     return result
 }
+
+
+
 
 
 /**
