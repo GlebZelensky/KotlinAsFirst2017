@@ -239,7 +239,7 @@ fun firstDuplicateIndex(str: String): Int {
             val duplicateWordFirst = words[i]
             val duplicateWordSecond = words[i + 1]
             return str.indexOf(duplicateWordFirst + " " + duplicateWordSecond)
-        }
+        } else if (i + 1 == words.size - 1) return -1
     }
     return -1
 }
