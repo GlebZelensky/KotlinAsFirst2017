@@ -128,6 +128,8 @@ fun flattenPhoneNumber(phone: String): String {
     for (i in 0 until charactersFilter.length) {
         if (charactersFilter[i] != '+') {
             if (charactersFilter[i].isDigit()) else return ""
+        } else {
+            if (charactersFilter[i] != charactersFilter[0]) return ""
         }
         number.append(charactersFilter[i])
     }
@@ -146,7 +148,7 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val resultList = mutableListOf<Int>()
-    val digitsParts = Regex("""[ ]{1,10}""").split(jumps.filter { it != '-' && it != '%' }.trim())
+    val digitsParts = Regex("""[ ]{1,1000}""").split(jumps.filter { it != '-' && it != '%' }.trim())
     for (part in digitsParts) {
         try {
             resultList.add(part.toInt())
