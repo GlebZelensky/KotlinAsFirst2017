@@ -349,8 +349,7 @@ fun romanHundreds(n: Int): String {
 fun russian(n: Int): String {
     if (n < 1000) {
         return forHundreds(n).trim()
-    }
-    else {
+    } else {
         val resultList = mutableListOf<String>()
         val thousands = listOf("одна", "две", "три", "четыре",
                 "пять", "шесть", "семь", "восемь", "девять")
@@ -405,8 +404,7 @@ fun forHundreds(n: Int): String {
     }
     return if (result.isNotEmpty()) {
         " " + result.joinToString(separator = " ")
-    }
-    else {
+    } else {
         return ""
     }
 }

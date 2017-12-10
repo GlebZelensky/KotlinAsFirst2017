@@ -129,7 +129,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in n / 2 downTo minDivisor(n))
+    for (i in n / 2 downTo Math.sqrt(n.toDouble()).toInt())
         if (n % i == 0) return i
     return 1
 }
@@ -167,23 +167,27 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun decisionSinCos(x: Double, eps: Double, pow: Double, minus: Int, result: Double): Double {
+fun decisionSinCos(x: Double, eps: Double, pow: Int, minus: Int, result: Double): Double {
     var result2 = result
-    var n = x
     val sequence = x % (2 * PI)
-    var pow1 = pow
+    var n = sequence
+    var m = if (pow == 1) sequence else sqr(sequence)
+    var meter = pow
     var minus1 = minus
+    var factorial = factorial(meter)
     while (eps < abs(n)) {
-        n = pow(sequence, pow1) / factorial(pow1.toInt())
+        n = m / factorial
         result2 += n * minus1
         minus1 *= -1
-        pow1 += 2.0
+        meter += 2
+        factorial = factorial(meter)
+        m *= sqr(sequence)
     }
     return result2
 }
 
 fun sin(x: Double, eps: Double): Double {
-    val pow = 1.0
+    val pow = 1
     val minus = 1
     val result = 0.0
     return decisionSinCos(x, eps, pow, minus, result)
@@ -199,7 +203,7 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     val minus = -1
-    val pow = 2.0
+    val pow = 2
     val result = 1.0
     return decisionSinCos(x, eps, pow, minus, result)
 }
@@ -269,13 +273,13 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun digNumber(digNumber: Int, result: Int, n: Int): Int {
     var result1 = result
     var digNumber1 = digNumber
-    if (digNumber1 == n) return result1 % 10
-    else while (digNumber1 > n) {
+    while (digNumber1 > n) {
         result1 /= 10
         digNumber1 -= 1
     }
     return result1 % 10
 }
+
 fun squareSequenceDigit(n: Int): Int {
     var digits = 0
     var result = 1
@@ -285,6 +289,7 @@ fun squareSequenceDigit(n: Int): Int {
         result = digits * digits
         digNumber += digitNumber(result)
     }
+    if (digNumber == n) return result % 10
     return digNumber(digNumber, result, n)
 }
 
@@ -304,5 +309,6 @@ fun fibSequenceDigit(n: Int): Int {
         result = lesson3.task1.fib(digits)
         digNumber += digitNumber(result)
     }
+    if (digNumber == n) return result % 10
     return digNumber(digNumber, result, n)
 }

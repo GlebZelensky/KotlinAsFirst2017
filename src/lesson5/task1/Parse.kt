@@ -68,20 +68,21 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
-            "августа", "сентября", "октября", "ноября", "декабря")
     val parts = str.split(" ")
     if (parts.size != 3) return ""
     val month = if (parts[1] in months) {
         months.indexOf(parts[1]) + 1
-    } else return ""
+    } else {
+        return ""
+    }
     return try {
         String.format("%02d.%02d.%d", parts[0].toInt(), month, parts[2].toInt())
     } catch (e: NumberFormatException) {
         ""
     }
 }
-
+val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+        "августа", "сентября", "октября", "ноября", "декабря")
 /**
  * Средняя
  *
@@ -90,8 +91,6 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
-            "августа", "сентября", "октября", "ноября", "декабря")
     val parts = digital.split(".")
     if (parts.size != 3) return ""
     try {
@@ -122,17 +121,13 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val number = StringBuilder()
-    val charactersFilter = phone.filter { it !in listOf( ' ','-','(',')') }
-    try {
+    val charactersFilter = phone.filter { it !in (" -()") }
         for (i in 0 until charactersFilter.length) {
             if (charactersFilter[i] != '+') {
-                charactersFilter[i].toString().toInt()
+               if (charactersFilter[i].isDigit()) else return ""
             }
             number.append(charactersFilter[i])
         }
-    } catch (e: NumberFormatException) {
-        return ""
-    }
     return number.toString()
 }
 
