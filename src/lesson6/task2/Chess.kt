@@ -37,17 +37,21 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    val columnWords = "abcdefgh"
     val row: Int
+    if (notation == "") throw IllegalArgumentException()
     if (notation[1].isDigit()) {
         row = notation[1].toString().toInt()
     } else {
         throw IllegalArgumentException()
     }
-    if ((notation[0] in columnWords) && (row in 1..8)) {
-        val column = columnWords.indexOf(notation[0]) + 1
-        return Square(column, row)
+    if ((notation[0] in "abcdefgh") && (row in 1..8)) {
+        return Square(translation(notation[0]), row)
     } else throw IllegalArgumentException()
+}
+
+fun translation (column: Char): Int {
+    val columnLetters = "abcdefgh"
+    return columnLetters.indexOf(column) + 1
 }
 
 /**
