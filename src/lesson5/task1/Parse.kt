@@ -202,24 +202,24 @@ fun plusMinus(expression: String): Int {
     var numeric = true
     try {
         parseDouble(expression.filter { it !in "+- " })
+        if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
+        else throw IllegalArgumentException()
+        for (i in 0 until numbers.size - 1) {
+            if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
+            if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
+            if (numbers[i] == "+") {
+                result += numbers[i + 1].toInt()
+                meter = 1
+            }
+            if (numbers[i] == "-") {
+                result -= numbers[i + 1].toInt()
+                meter = 1
+            }
+        }
     } catch (e: NumberFormatException) {
         numeric = false
     }
     if (numeric) else throw IllegalArgumentException()
-    if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
-    else throw IllegalArgumentException()
-    for (i in 0 until numbers.size - 1) {
-        if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
-        if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
-        if (numbers[i] == "+") {
-            result += numbers[i + 1].toInt()
-            meter = 1
-        }
-        if (numbers[i] == "-") {
-            result -= numbers[i + 1].toInt()
-            meter = 1
-        }
-    }
     return result
 }
 
