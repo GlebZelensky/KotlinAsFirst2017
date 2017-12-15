@@ -168,22 +168,22 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun decisionSinCos(x: Double, eps: Double, pow: Int, minus: Int, result: Double): Double {
-    var result2 = result
+    var sinOrCos = result
     val sequence = x % (2 * PI)
     var n = sequence
-    var m = if (pow == 1) sequence else sqr(sequence)
+    var start = if (pow == 1) sequence else sqr(sequence)
     var meter = pow
     var minus1 = minus
     var factorial = factorial(meter)
     while (eps < abs(n)) {
-        n = m / factorial
-        result2 += n * minus1
+        n = start / factorial
+        sinOrCos += n * minus1
         minus1 *= -1
         meter += 2
         factorial = factorial(meter)
-        m *= sqr(sequence)
+        start *= sqr(sequence)
     }
-    return result2
+    return sinOrCos
 }
 
 fun sin(x: Double, eps: Double): Double {
