@@ -38,8 +38,7 @@ data class Square(val column: Int, val row: Int) {
  */
 fun square(notation: String): Square {
     val row: Int
-    if (notation == "") throw IllegalArgumentException()
-    if (notation[1].isDigit()) {
+    if (notation[1].isDigit() && notation.length == 2) {
         row = notation[1].toString().toInt()
     } else {
         throw IllegalArgumentException()
