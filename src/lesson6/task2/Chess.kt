@@ -78,7 +78,13 @@ fun translation(column: Char): Int {
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int = TODO()
+fun rookMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    return if (start != end) {
+        if (start.column == end.column || start.row == end.row) 1
+        else 2
+    } else 0
+}
 
 /**
  * Средняя
@@ -94,7 +100,11 @@ fun rookMoveNumber(start: Square, end: Square): Int = TODO()
  *          rookTrajectory(Square(3, 5), Square(8, 5)) = listOf(Square(3, 5), Square(8, 5))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun rookTrajectory(start: Square, end: Square): List<Square> {
+    val numberOfMoves = rookMoveNumber(start, end)
+    if (numberOfMoves == 0) return listOf(start)
+    return if (numberOfMoves == 1) listOf(start, end) else listOf(start, Square(end.column, start.row), end)
+}
 
 /**
  * Простая
