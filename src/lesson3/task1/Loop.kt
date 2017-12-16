@@ -167,30 +167,28 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun decisionSinCos(x: Double, eps: Double, pow: Int, minus: Int, result: Double): Double {
-    var sinOrCos = result
+fun decisionSinCos(x: Double, eps: Double, pow: Double): Double {
+    var sinOrCos =  if (pow == 1.0) 0.0 else 1.0
     val sequence = x % (2 * PI)
     var n = sequence
-    var start = if (pow == 1) sequence else sqr(sequence)
+    var start = if (pow == 1.0) sequence else sqr(sequence)
     var meter = pow
-    var minus1 = minus
-    var factorial = factorial(meter)
+    var minus1 = if (pow == 1.0) 1 else -1
+    var factorial = meter
     while (eps < abs(n)) {
         n = start / factorial
         sinOrCos += n * minus1
         minus1 *= -1
-        meter += 2
-        factorial = factorial(meter)
+        meter += 2.0
+        factorial *= meter * (meter - 1.0)
         start *= sqr(sequence)
     }
     return sinOrCos
 }
 
 fun sin(x: Double, eps: Double): Double {
-    val pow = 1
-    val minus = 1
-    val result = 0.0
-    return decisionSinCos(x, eps, pow, minus, result)
+    val pow = 1.0
+    return decisionSinCos(x, eps, pow)
 }
 
 
@@ -202,10 +200,8 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    val minus = -1
-    val pow = 2
-    val result = 1.0
-    return decisionSinCos(x, eps, pow, minus, result)
+    val pow = 2.0
+    return decisionSinCos(x, eps, pow)
 }
 
 /**
@@ -270,14 +266,9 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun digNumber(digNumber: Int, result: Int, n: Int): Int {
-    var result1 = result
-    var digNumber1 = digNumber
-    while (digNumber1 > n) {
-        result1 /= 10
-        digNumber1 -= 1
-    }
-    return result1 % 10
+fun digNumber(digNumber: Int, result: Int): Int {
+    val s = result.toString().reversed()
+    return s[digNumber].toString().toInt()
 }
 
 fun squareSequenceDigit(n: Int): Int {
@@ -290,7 +281,7 @@ fun squareSequenceDigit(n: Int): Int {
         digNumber += digitNumber(result)
     }
     if (digNumber == n) return result % 10
-    return digNumber(digNumber, result, n)
+    return digNumber(digNumber - n, result)
 }
 
 /**
@@ -310,5 +301,5 @@ fun fibSequenceDigit(n: Int): Int {
         digNumber += digitNumber(result)
     }
     if (digNumber == n) return result % 10
-    return digNumber(digNumber, result, n)
+    return digNumber(digNumber - n, result)
 }

@@ -5,6 +5,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import lesson3.task1.digitNumber
+import lesson3.task1.isPrime
 import lesson3.task1.minDivisor
 import java.lang.Double.NaN
 import java.lang.Math.pow
@@ -208,11 +209,14 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
 fun factorize(n: Int): List<Int> {
     val resultList = mutableListOf<Int>()
     var n1 = n
-    while (n1 > 1) {
-        val div = minDivisor(n1)
-        resultList.add(div)
-        n1 /= div
+    var i = minDivisor(n1)
+    while (!isPrime(n1)) {
+       if (n1 % i == 0) {
+           resultList.add(i)
+           n1 /= i
+       } else i++
     }
+    if (isPrime(n1)) resultList.add(n1)
     return resultList
 }
 
