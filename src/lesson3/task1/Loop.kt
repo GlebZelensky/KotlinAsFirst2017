@@ -267,8 +267,9 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun digNumber(digNumber: Int, result: Int): Int {
-    val s = result.toString().reversed()
-    return s[digNumber].toString().toInt()
+    var r = result
+    for (i in 0 until digNumber) r /= 10
+    return r % 10
 }
 
 fun squareSequenceDigit(n: Int): Int {

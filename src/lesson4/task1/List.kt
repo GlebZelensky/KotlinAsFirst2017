@@ -210,13 +210,13 @@ fun factorize(n: Int): List<Int> {
     val resultList = mutableListOf<Int>()
     var n1 = n
     var i = minDivisor(n1)
-    while (!isPrime(n1)) {
+    if (isPrime(n1)) return resultList + n1
+    while (n1 != 1) {
        if (n1 % i == 0) {
            resultList.add(i)
            n1 /= i
        } else i++
     }
-    if (isPrime(n1)) resultList.add(n1)
     return resultList
 }
 
