@@ -119,7 +119,6 @@ fun circleByDiameter(diameter: Segment): Circle {
     val radiusDistance = p1Diameter.distance(p2Diameter) / 2.0
     val center = Point((p1Diameter.x + p2Diameter.x) / 2.0, (p1Diameter.y + p2Diameter.y) / 2.0)
     return Circle(center, radiusDistance)
-
 }
 
 

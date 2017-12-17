@@ -124,17 +124,13 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val number = StringBuilder()
-    var tester = 0
-    val charactersFilter = phone.filter { it !in (" -()") }
-    for (i in 0 until charactersFilter.length) {
-        if (charactersFilter[i] != '+') {
-            if (charactersFilter[i].isDigit()) tester++ else return ""
-        } else {
-            if (charactersFilter[i] != charactersFilter[0]) return ""
-        }
-        number.append(charactersFilter[i])
+    if ('+' in phone) {
+       if  ('+' != phone[0]) return "" else number.append('+')
     }
-    if (tester == 0) return ""
+    val charactersFilter = phone.filter { it !in (" -()+") }
+    for (i in 0 until charactersFilter.length) {
+        if (charactersFilter[i].isDigit()) number.append(charactersFilter[i]) else return ""
+    }
     return number.toString()
 }
 
@@ -201,7 +197,7 @@ fun plusMinus(expression: String): Int {
     var meter = 1
     var numeric = true
     try {
-        parseDouble(expression.filter { it !in "+- " })
+        (expression.filter { it !in "+- " }).toInt()
         if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
         else throw IllegalArgumentException()
         for (i in 0 until numbers.size - 1) {
@@ -234,14 +230,16 @@ fun plusMinus(expression: String): Int {
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int {
-    val words = str.split(' ')
+    val words = str.toLowerCase().split(' ')
     if (words.size == 1) return -1
     for (i in 0 until words.size) {
-        if (words[i].toLowerCase() == words[i + 1].toLowerCase()) {
+        if (words[i] == words[i + 1]) {
             val duplicateWordFirst = words[i]
             val duplicateWordSecond = words[i + 1]
-            return str.indexOf(duplicateWordFirst + " " + duplicateWordSecond)
-        } else if (i + 1 == words.size - 1) return -1
+            return str.toLowerCase().indexOf(duplicateWordFirst + " " + duplicateWordSecond)
+        } else {
+            if (i + 1 == words.size - 1) return -1
+        }
     }
     return -1
 }

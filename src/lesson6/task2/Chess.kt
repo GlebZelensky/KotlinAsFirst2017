@@ -22,11 +22,7 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String {
-        return if (inside()) {
-            ('a' + column - 1).toString() + "$row"
-        } else ""
-    }
+    fun notation(): String = if (inside()) 'a' + column - 1 + "$row" else ""
 }
 
 /**
@@ -37,23 +33,16 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    val row: Int
-    if (notation.length == 2) {
-        if (notation[1].isDigit()) {
-            row = notation[1].toString().toInt()
-        } else {
-            throw IllegalArgumentException()
-        }
-        if ((notation[0] in "abcdefgh") && (row in 1..8)) {
-            return Square(translation(notation[0]), row)
-        } else throw IllegalArgumentException()
+    val row = if (notation.length != 2) {
+        throw IllegalArgumentException()
+    } else {
+        if (notation[1].isDigit()) notation[1].toString().toInt() else throw IllegalArgumentException()
+    }
+    return if ((notation[0] in "abcdefgh") && (row in 1..8)) {
+        Square(notation[0].toInt() - 96, row)
     } else throw IllegalArgumentException()
 }
 
-fun translation(column: Char): Int {
-    val columnLetters = "abcdefgh"
-    return columnLetters.indexOf(column) + 1
-}
 
 /**
  * Простая
@@ -80,10 +69,11 @@ fun translation(column: Char): Int {
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
     if (!start.inside() || !end.inside()) throw IllegalArgumentException()
-    return if (start != end) {
-        if (start.column == end.column || start.row == end.row) 1
+    return when {
+        start != end -> if (start.column == end.column || start.row == end.row) 1
         else 2
-    } else 0
+        else -> 0
+    }
 }
 
 /**
@@ -102,8 +92,10 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  */
 fun rookTrajectory(start: Square, end: Square): List<Square> {
     val numberOfMoves = rookMoveNumber(start, end)
-    if (numberOfMoves == 0) return listOf(start)
-    return if (numberOfMoves == 1) listOf(start, end) else listOf(start, Square(end.column, start.row), end)
+    return when (numberOfMoves) {
+        0 -> listOf(start)
+        else -> if (numberOfMoves == 1) listOf(start, end) else listOf(start, Square(end.column, start.row), end)
+    }
 }
 
 /**

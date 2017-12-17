@@ -168,7 +168,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun decisionSinCos(x: Double, eps: Double, pow: Double): Double {
-    var sinOrCos =  if (pow == 1.0) 0.0 else 1.0
+    var sinOrCos = if (pow == 1.0) 0.0 else 1.0
     val sequence = x % (2 * PI)
     var n = sequence
     var start = if (pow == 1.0) sequence else sqr(sequence)
