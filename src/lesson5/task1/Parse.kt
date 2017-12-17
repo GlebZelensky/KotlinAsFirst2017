@@ -125,7 +125,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val number = StringBuilder()
     if ('+' in phone) {
-       if  ('+' != phone[0]) return "" else number.append('+')
+        if ('+' != phone[0]) return "" else number.append('+')
     }
     val charactersFilter = phone.filter { it !in (" -()+") }
     for (i in 0 until charactersFilter.length) {
@@ -195,11 +195,11 @@ fun plusMinus(expression: String): Int {
     val numbers = expression.split(' ')
     var result = 0
     var meter = 1
-    var numeric = true
+    var numeric = false
+    if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
+    else throw IllegalArgumentException()
     try {
-        (expression.filter { it !in "+- " }).toInt()
-        if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
-        else throw IllegalArgumentException()
+        (expression.filter { it.isDigit() })
         for (i in 0 until numbers.size - 1) {
             if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
             if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
@@ -213,9 +213,9 @@ fun plusMinus(expression: String): Int {
             }
         }
     } catch (e: NumberFormatException) {
-        numeric = false
+        numeric = true
     }
-    if (numeric) else throw IllegalArgumentException()
+    if (numeric) throw IllegalArgumentException()
     return result
 }
 
