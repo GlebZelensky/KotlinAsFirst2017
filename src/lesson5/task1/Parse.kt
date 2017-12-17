@@ -146,7 +146,7 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val resultList = mutableListOf<Int>()
-    val digitsParts = Regex("""[ ]{1,1000}""").split(jumps.filter { it != '-' && it != '%' }.trim())
+    val digitsParts = Regex("""[ ]+""").split(jumps.filter { it != '-' && it != '%' }.trim())
     for (part in digitsParts) {
         try {
             resultList.add(part.toInt())
@@ -256,7 +256,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    val productsWithPrice = Regex("""[ ]{1,1000}""").split(description.filter { it != ';' })
+    val productsWithPrice = Regex("""[ ]+""").split(description.filter { it != ';' })
     val priceList = mutableListOf<Double>()
     val products = mutableListOf<String>()
     var meter = 0
