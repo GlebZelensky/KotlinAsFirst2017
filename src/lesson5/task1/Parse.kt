@@ -207,7 +207,7 @@ fun plusMinus(expression: String): Int {
     if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
     else throw IllegalArgumentException()
     try {
-        numbers.filter { it !in "+-" && it.toInt() >= 0 }
+        (expression.filter { it !in "+- " }).toInt()
         for (i in 0 until numbers.size - 1) {
             if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
             if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
