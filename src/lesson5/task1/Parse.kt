@@ -204,10 +204,9 @@ fun plusMinus(expression: String): Int {
     var result = 0
     var meter = 1
     var numeric = false
-    if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
-    else throw IllegalArgumentException()
     try {
-        (expression.filter { it !in "+- " }).toInt()
+        if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
+        else throw IllegalArgumentException()
         for (i in 0 until numbers.size - 1) {
             if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
             if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
