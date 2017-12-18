@@ -125,11 +125,19 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val number = StringBuilder()
     if ('+' in phone) {
-        if ('+' != phone[0]) return "" else number.append('+')
+        if ('+' != phone[0]) {
+            return ""
+        } else {
+            number.append('+')
+        }
     }
     val charactersFilter = phone.filter { it !in (" -()+") }
     for (i in 0 until charactersFilter.length) {
-        if (charactersFilter[i].isDigit()) number.append(charactersFilter[i]) else return ""
+        if (charactersFilter[i].isDigit()) {
+            number.append(charactersFilter[i])
+        } else {
+            return ""
+        }
     }
     return number.toString()
 }
@@ -146,7 +154,7 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val resultList = mutableListOf<Int>()
-    val digitsParts = Regex("""[ ]+""").split(jumps.filter { it != '-' && it != '%' }.trim())
+    val digitsParts = Regex(""" +""").split(jumps.filter { it != '-' && it != '%' }.trim())
     for (part in digitsParts) {
         try {
             resultList.add(part.toInt())
@@ -199,7 +207,7 @@ fun plusMinus(expression: String): Int {
     if (((numbers[0] != "+") && (numbers[0] != "-")) || (expression.isEmpty())) result += numbers[0].toInt()
     else throw IllegalArgumentException()
     try {
-        (expression.filter { it.isDigit() })
+        numbers.filter { it !in "+-" && it.toInt() >= 0 }
         for (i in 0 until numbers.size - 1) {
             if ((numbers[i] == "+") || (numbers[i] == "-")) meter-- else meter++
             if ((meter == 3) || (meter == -1)) throw IllegalArgumentException()
@@ -256,7 +264,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    val productsWithPrice = Regex("""[ ]+""").split(description.filter { it != ';' })
+    val productsWithPrice = Regex(""" +""").split(description.filter { it != ';' })
     val priceList = mutableListOf<Double>()
     val products = mutableListOf<String>()
     var meter = 0

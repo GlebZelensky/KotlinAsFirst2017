@@ -281,7 +281,6 @@ fun squareSequenceDigit(n: Int): Int {
         result = digits * digits
         digNumber += digitNumber(result)
     }
-    if (digNumber == n) return result % 10
     return digNumber(digNumber - n, result)
 }
 
@@ -301,6 +300,5 @@ fun fibSequenceDigit(n: Int): Int {
         result = lesson3.task1.fib(digits)
         digNumber += digitNumber(result)
     }
-    if (digNumber == n) return result % 10
     return digNumber(digNumber - n, result)
 }

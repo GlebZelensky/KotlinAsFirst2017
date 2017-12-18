@@ -39,7 +39,7 @@ fun square(notation: String): Square {
         if (notation[1].isDigit()) notation[1].toString().toInt() else throw IllegalArgumentException()
     }
     return if ((notation[0] in "abcdefgh") && (row in 1..8)) {
-        Square(notation[0].toInt() - 96, row)
+        Square(notation[0] - 'a' + 1, row)
     } else throw IllegalArgumentException()
 }
 
@@ -94,7 +94,8 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
     val numberOfMoves = rookMoveNumber(start, end)
     return when (numberOfMoves) {
         0 -> listOf(start)
-        else -> if (numberOfMoves == 1) listOf(start, end) else listOf(start, Square(end.column, start.row), end)
+        1 -> listOf(start, end)
+        else -> listOf(start, Square(end.column, start.row), end)
     }
 }
 
